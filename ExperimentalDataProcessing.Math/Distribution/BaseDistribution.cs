@@ -58,13 +58,10 @@ namespace ExperimentalDataProcessing.Math.Distribution
             var meanEstimation = CalculateParameterEstimation("Математическое ожидание", estimateAccuracy,
                 ExperimentalCharacteristics.Mean, TheoreticalCharacteristics.Mean);
 
-            var stdDevEstimation = CalculateParameterEstimation("Среднеквадратическое отклонение", estimateAccuracy,
-                ExperimentalCharacteristics.StdDev, TheoreticalCharacteristics.StdDev);
-
             var dispersionEstimation = CalculateParameterEstimation("Дисперсия", estimateAccuracy,
                 ExperimentalCharacteristics.Dispersion, TheoreticalCharacteristics.Dispersion);
 
-            return new[] { meanEstimation, stdDevEstimation, dispersionEstimation };
+            return new[] { meanEstimation, dispersionEstimation };
         }
 
         private ParameterEstimation CalculateParameterEstimation(string name, double estimateAccuracy,
