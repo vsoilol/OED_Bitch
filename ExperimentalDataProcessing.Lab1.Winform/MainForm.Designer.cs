@@ -191,7 +191,7 @@ namespace ExperimentalDataProcessing.Lab1.Winform
             this.calculateButton.Location = new System.Drawing.Point(8, 170);
             this.calculateButton.Name = "calculateButton";
             this.calculateButton.Size = new System.Drawing.Size(358, 41);
-            this.calculateButton.TabIndex = 26;
+            this.calculateButton.TabIndex = 31;
             this.calculateButton.Text = "Рассчитать";
             this.calculateButton.UseVisualStyleBackColor = true;
             this.calculateButton.Click += new System.EventHandler(this.calculateButton_Click);
@@ -203,7 +203,7 @@ namespace ExperimentalDataProcessing.Lab1.Winform
             this.inputsContainerPanel.Location = new System.Drawing.Point(8, 97);
             this.inputsContainerPanel.Name = "inputsContainerPanel";
             this.inputsContainerPanel.Size = new System.Drawing.Size(358, 73);
-            this.inputsContainerPanel.TabIndex = 24;
+            this.inputsContainerPanel.TabIndex = 30;
             // 
             // estimateAccuracyInput
             // 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ExperimentalDataProcessing.Helpers;
 using ExperimentalDataProcessing.Math.Models;
@@ -27,6 +28,47 @@ namespace ExperimentalDataProcessing.Math.Distribution
 
         public override void GeneratePseudorandomValues()
         {
+            PseudorandomValues = GeneratePseudorandomValuesBasedOnCentralLimitTheorem();
+            DataSaver.SaveDataToFile(PseudorandomValues, "Нормальное");
+        }
+
+        /// <summary>
+        /// Метод, основанный на центральной предельной теореме
+        /// https://intuit.ru/studies/courses/2260/156/lecture/27247?page=3
+        /// Согласно центральной предельной теореме,
+        /// при сложении достаточно большого количества независимых случайных
+        /// величин с произвольным законом распределения получается случайная величина,
+        /// распределенная по нормальному закону.
+        /// https://ru.wikipedia.org/wiki/%D0%A6%D0%B5%D0%BD%D1%82%D1%80%D0%B0%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F_%D0%BF%D1%80%D0%B5%D0%B4%D0%B5%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F_%D1%82%D0%B5%D0%BE%D1%80%D0%B5%D0%BC%D0%B0
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerable<double> GeneratePseudorandomValuesBasedOnCentralLimitTheorem()
+        {
+            var values = new double[_valuesAmount];
+
+            for (int i = 0; i < _valuesAmount; i++)
+            {
+                int n = 100; // Количество равномерно распределенных чисел для одного "эксперимента"
+
+                double sum = 0;
+                for (int a = 0; a < n; a++)
+                {
+                    sum += GenerateUniform();
+                }
+
+                double sampleMean = sum / n; // Среднее значение выборки
+                
+                // Нормализация с использованием ЦПТ
+                double normalizedValue = _stdDev * (sampleMean - 0.5) * System.Math.Sqrt(12 * n) + _mean;
+
+                values[i] = normalizedValue;
+            }
+
+            return values;
+        }
+
+        private IEnumerable<double> GeneratePseudorandomValuesUseLibrary()
+        {
             var normal = new Normal(_mean, _stdDev);
 
             var values = new double[_valuesAmount];
@@ -36,8 +78,7 @@ namespace ExperimentalDataProcessing.Math.Distribution
                 values[i] = normal.Sample();
             }
 
-            PseudorandomValues = values;
-            DataSaver.SaveDataToFile(PseudorandomValues, "Нормальное");
+            return values;
         }
 
         protected override void CalculateTheoreticalCharacteristics()

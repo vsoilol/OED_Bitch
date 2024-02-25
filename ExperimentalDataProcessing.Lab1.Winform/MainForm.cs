@@ -97,8 +97,8 @@ namespace ExperimentalDataProcessing.Lab1.Winform
 
                 var passwdCheckText = parameterEstimation.HasPassedCheck ? "Да" : "Нет";
 
-                valuesResultTable.Rows.Add(parameterEstimation.Name, parameterExperimentalValue,
-                    parameterTheoreticalValue, parameterDeviation,
+                valuesResultTable.Rows.Add(parameterEstimation.Name, parameterTheoreticalValue,
+                    parameterExperimentalValue, parameterDeviation,
                     passwdCheckText);
             }
         }

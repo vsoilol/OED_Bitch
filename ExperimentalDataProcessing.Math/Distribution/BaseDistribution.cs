@@ -7,6 +7,10 @@ namespace ExperimentalDataProcessing.Math.Distribution
 {
     public abstract class BaseDistribution
     {
+        private readonly Random _random = new Random((int)DateTime.Now.Ticks);
+        
+        protected double GenerateUniform() => _random.NextDouble();
+        
         public virtual bool IsDensityGraphingFromPoints { get; protected set; } = false;
 
         public IEnumerable<double> PseudorandomValues { get; protected set; }

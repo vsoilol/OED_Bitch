@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ExperimentalDataProcessing.Helpers;
 using ExperimentalDataProcessing.Math.Models;
@@ -21,6 +22,24 @@ namespace ExperimentalDataProcessing.Math.Distribution
 
         public override void GeneratePseudorandomValues()
         {
+            PseudorandomValues = GeneratePseudorandomValuesUseLibrary();
+            DataSaver.SaveDataToFile(PseudorandomValues, "Равномерное");
+        }
+        
+        private IEnumerable<double> GeneratePseudorandomValuesUseFormulas()
+        {
+            var values = new double[_valuesAmount];
+
+            for (var i = 0; i < _valuesAmount; i++)
+            {
+                values[i] = this.GenerateUniform();
+            }
+
+            return values;
+        }
+        
+        private IEnumerable<double> GeneratePseudorandomValuesUseLibrary()
+        {
             var continuousUniform = new ContinuousUniform(_intervalStart, _intervalEnd);
 
             var values = new double[_valuesAmount];
@@ -30,8 +49,7 @@ namespace ExperimentalDataProcessing.Math.Distribution
                 values[i] = continuousUniform.Sample();
             }
 
-            PseudorandomValues = values;
-            DataSaver.SaveDataToFile(PseudorandomValues, "Равномерное");
+            return values;
         }
 
         protected override void CalculateTheoreticalCharacteristics()
