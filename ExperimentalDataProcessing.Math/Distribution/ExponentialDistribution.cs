@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using ExperimentalDataProcessing.Helpers;
 using ExperimentalDataProcessing.Math.Models;
 using MathNet.Numerics.Distributions;
@@ -24,6 +24,24 @@ namespace ExperimentalDataProcessing.Math.Distribution
 
         public override void GeneratePseudorandomValues()
         {
+            PseudorandomValues = GeneratePseudorandomValuesUseFormulas();
+            DataSaver.SaveDataToFile(PseudorandomValues, "Показательное");
+        }
+        
+        private IEnumerable<double> GeneratePseudorandomValuesUseFormulas()
+        {
+            var values = new double[_valuesAmount];
+
+            for (var i = 0; i < _valuesAmount; i++)
+            {
+                values[i] = (-1 / _lambda) * System.Math.Log(this.GenerateUniform());
+            }
+
+            return values;
+        }
+        
+        private IEnumerable<double> GeneratePseudorandomValuesUseLibrary()
+        {
             var exponential = new Exponential(_lambda);
 
             var values = new double[_valuesAmount];
@@ -33,8 +51,7 @@ namespace ExperimentalDataProcessing.Math.Distribution
                 values[i] = exponential.Sample();
             }
 
-            PseudorandomValues = values;
-            DataSaver.SaveDataToFile(PseudorandomValues, "Показательное");
+            return values;
         }
 
         protected override void CalculateTheoreticalCharacteristics()

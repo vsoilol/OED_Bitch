@@ -46,20 +46,20 @@ namespace ExperimentalDataProcessing.Math.Distribution
         {
             var values = new double[_valuesAmount];
 
-            for (int i = 0; i < _valuesAmount; i++)
+            for (var i = 0; i < _valuesAmount; i++)
             {
-                int n = 100; // Количество равномерно распределенных чисел для одного "эксперимента"
+                var n = 100; // Количество равномерно распределенных чисел для одного "эксперимента"
 
                 double sum = 0;
-                for (int a = 0; a < n; a++)
+                for (var a = 0; a < n; a++)
                 {
                     sum += GenerateUniform();
                 }
 
-                double sampleMean = sum / n; // Среднее значение выборки
+                var sampleMean = sum / n; // Среднее значение выборки
                 
                 // Нормализация с использованием ЦПТ
-                double normalizedValue = _stdDev * (sampleMean - 0.5) * System.Math.Sqrt(12 * n) + _mean;
+                var normalizedValue = _stdDev * (sampleMean - 0.5) * System.Math.Sqrt(12 * n) + _mean;
 
                 values[i] = normalizedValue;
             }
