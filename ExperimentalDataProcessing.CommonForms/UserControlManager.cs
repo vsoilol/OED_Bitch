@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using ExperimentalDataProcessing.CommonForms.UserControls;
 
-namespace ExperimentalDataProcessing.Lab1.Winform.UserControls
+namespace ExperimentalDataProcessing.CommonForms
 {
     public class UserControlManager
     {

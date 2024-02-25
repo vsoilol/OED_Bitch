@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace ExperimentalDataProcessing.Lab1.Winform.UserControls
+namespace ExperimentalDataProcessing.CommonForms.UserControls
 {
     partial class NormalDistributionInputsPanel
     {

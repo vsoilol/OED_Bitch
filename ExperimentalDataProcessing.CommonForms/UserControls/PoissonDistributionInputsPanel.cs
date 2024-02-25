@@ -1,17 +1,17 @@
 ﻿using ExperimentalDataProcessing.Math.Distribution;
 
-namespace ExperimentalDataProcessing.Lab1.Winform.UserControls
+namespace ExperimentalDataProcessing.CommonForms.UserControls
 {
     public partial class PoissonDistributionInputsPanel : BaseInputsPanel
     {
-        public override int InitialHeight { get; }
-
         public PoissonDistributionInputsPanel()
         {
             InitializeComponent();
 
-            InitialHeight = this.Height;
+            InitialHeight = Height;
         }
+
+        public override int InitialHeight { get; }
 
         public override BaseDistribution GetDistribution()
         {

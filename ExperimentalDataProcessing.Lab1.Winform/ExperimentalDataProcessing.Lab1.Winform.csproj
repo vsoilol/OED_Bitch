@@ -78,36 +78,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UserControls\AbstractControlDescriptionProvider.cs" />
-    <Compile Include="UserControls\BaseInputsPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControls\ContinuousUniformDistributionInputsPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControls\ContinuousUniformDistributionInputsPanel.Designer.cs">
-      <DependentUpon>ContinuousUniformDistributionInputsPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\ExponentialDistributionInputsPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControls\ExponentialDistributionInputsPanel.Designer.cs">
-      <DependentUpon>ExponentialDistributionInputsPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\NormalDistributionInputsPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControls\NormalDistributionInputsPanel.Designer.cs">
-      <DependentUpon>NormalDistributionInputsPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\PoissonDistributionInputsPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControls\PoissonDistributionInputsPanel.Designer.cs">
-      <DependentUpon>PoissonDistributionInputsPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\UserControlManager.cs" />
-    <Compile Include="Сonstants\DistributionComboBoxValues.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -120,18 +90,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="UserControls\ContinuousUniformDistributionInputsPanel.resx">
-      <DependentUpon>ContinuousUniformDistributionInputsPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\ExponentialDistributionInputsPanel.resx">
-      <DependentUpon>ExponentialDistributionInputsPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\NormalDistributionInputsPanel.resx">
-      <DependentUpon>NormalDistributionInputsPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\PoissonDistributionInputsPanel.resx">
-      <DependentUpon>PoissonDistributionInputsPanel.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -147,6 +105,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ExperimentalDataProcessing.CommonForms\ExperimentalDataProcessing.CommonForms.csproj">
+      <Project>{1a3e8867-9b4b-4cc1-98c4-29c94074f34a}</Project>
+      <Name>ExperimentalDataProcessing.CommonForms</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ExperimentalDataProcessing.Helpers\ExperimentalDataProcessing.Helpers.csproj">
       <Project>{9345fa91-5f9f-4dc0-9122-bc843ef66226}</Project>
       <Name>ExperimentalDataProcessing.Helpers</Name>

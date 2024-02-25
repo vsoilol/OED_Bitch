@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using ExperimentalDataProcessing.Lab1.Winform.UserControls;
-using ExperimentalDataProcessing.Lab1.Winform.Сonstants;
+using ExperimentalDataProcessing.CommonForms.UserControls;
+using ExperimentalDataProcessing.CommonForms.Сonstants;
 using ExperimentalDataProcessing.Math.Distribution;
 using ScottPlot;
 using ScottPlot.Statistics;
@@ -11,23 +11,6 @@ namespace ExperimentalDataProcessing.Lab1.Winform
 {
     public partial class MainForm : Form
     {
-        private readonly Dictionary<string, BaseInputsPanel> _inputPanels = new Dictionary<string, BaseInputsPanel>
-        {
-            { DistributionComboBoxValues.Normal, UserControlManager.GetInstance<NormalDistributionInputsPanel>() },
-            {
-                DistributionComboBoxValues.Exponential,
-                UserControlManager.GetInstance<ExponentialDistributionInputsPanel>()
-            },
-            {
-                DistributionComboBoxValues.ContinuousUniform,
-                UserControlManager.GetInstance<ContinuousUniformDistributionInputsPanel>()
-            },
-            {
-                DistributionComboBoxValues.Poisson,
-                UserControlManager.GetInstance<PoissonDistributionInputsPanel>()
-            }
-        };
-
         private BaseInputsPanel _currentInputsPanel;
         private BaseDistribution _distribution;
 
@@ -46,7 +29,7 @@ namespace ExperimentalDataProcessing.Lab1.Winform
 
         private void distributionComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            _currentInputsPanel = _inputPanels[distributionComboBox.SelectedItem.ToString()];
+            _currentInputsPanel = DistributionComboBoxValues.InputPanels[distributionComboBox.SelectedItem.ToString()];
 
             _currentInputsPanel.Dock = DockStyle.Fill;
             inputsContainerPanel.Controls.Clear();

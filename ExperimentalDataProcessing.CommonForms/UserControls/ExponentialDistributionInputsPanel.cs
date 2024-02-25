@@ -1,18 +1,18 @@
 ﻿using ExperimentalDataProcessing.Math.Distribution;
 
-namespace ExperimentalDataProcessing.Lab1.Winform.UserControls
+namespace ExperimentalDataProcessing.CommonForms.UserControls
 {
     public partial class ExponentialDistributionInputsPanel : BaseInputsPanel
     {
-        public override int InitialHeight { get; }
-
         public ExponentialDistributionInputsPanel()
         {
             InitializeComponent();
-            
+
             InitialHeight = panel1.Height;
         }
-        
+
+        public override int InitialHeight { get; }
+
         public override BaseDistribution GetDistribution()
         {
             var valuesAmount = (int)System.Math.Round(valuesAmountInput.Value);

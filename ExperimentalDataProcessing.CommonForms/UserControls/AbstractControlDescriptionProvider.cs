@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace ExperimentalDataProcessing.Lab1.Winform.UserControls
+namespace ExperimentalDataProcessing.CommonForms.UserControls
 {
     public class AbstractControlDescriptionProvider<TAbstract, TBase> : TypeDescriptionProvider
     {
@@ -18,7 +18,8 @@ namespace ExperimentalDataProcessing.Lab1.Winform.UserControls
             return base.GetReflectionType(objectType, instance);
         }
 
-        public override object CreateInstance(IServiceProvider provider, Type objectType, Type[] argTypes, object[] args)
+        public override object CreateInstance(IServiceProvider provider, Type objectType, Type[] argTypes,
+            object[] args)
         {
             if (objectType == typeof(TAbstract))
                 objectType = typeof(TBase);
