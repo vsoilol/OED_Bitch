@@ -227,6 +227,7 @@ namespace ExperimentalDataProcessing.Lab1.Winform
             // distributionComboBox
             // 
             this.distributionComboBox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.distributionComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.distributionComboBox.FormattingEnabled = true;
             this.distributionComboBox.Location = new System.Drawing.Point(8, 31);
             this.distributionComboBox.Name = "distributionComboBox";
