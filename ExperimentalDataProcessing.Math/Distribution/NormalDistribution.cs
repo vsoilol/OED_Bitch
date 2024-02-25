@@ -1,34 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using ExperimentalDataProcessing.Helpers;
 using ExperimentalDataProcessing.Math.Models;
 using MathNet.Numerics.Distributions;
 
 namespace ExperimentalDataProcessing.Math.Distribution
 {
-    public class NormalDistribution : BaseDistribution
+    public sealed class NormalDistribution : BaseDistribution
     {
         private readonly double _mean;
         private readonly double _stdDev;
-        private readonly int _valuesAmount;
 
         /// <summary>
-        ///     Конструктор
+        /// Конструктор
         /// </summary>
         /// <param name="mean">Математическое ожидание</param>
         /// <param name="stdDev">Среднеквадратическое отклонение</param>
         /// <param name="valuesAmount">Количество значений</param>
-        public NormalDistribution(double mean, double stdDev, int valuesAmount)
+        /// <param name="estimateAccuracy">Точность оценки</param>
+        public NormalDistribution(int valuesAmount, double estimateAccuracy, double mean, double stdDev)
+            : base(valuesAmount, estimateAccuracy)
         {
             _mean = mean;
             _stdDev = stdDev;
-            _valuesAmount = valuesAmount;
+            
+            CalculateTheoreticalCharacteristics();
         }
 
         public override void GeneratePseudorandomValues()
         {
-            PseudorandomValues = GeneratePseudorandomValuesBasedOnCentralLimitTheorem();
+            do
+            {
+                PseudorandomValues = GeneratePseudorandomValuesBasedOnCentralLimitTheorem();
+                CalculateExperimentalCharacteristics();
+            } while (!IsCheckPassed());
+
             DataSaver.SaveDataToFile(PseudorandomValues, "Нормальное");
         }
 
@@ -44,9 +50,9 @@ namespace ExperimentalDataProcessing.Math.Distribution
         /// <returns></returns>
         private IEnumerable<double> GeneratePseudorandomValuesBasedOnCentralLimitTheorem()
         {
-            var values = new double[_valuesAmount];
+            var values = new double[ValuesAmount];
 
-            for (var i = 0; i < _valuesAmount; i++)
+            for (var i = 0; i < ValuesAmount; i++)
             {
                 var n = 100; // Количество равномерно распределенных чисел для одного "эксперимента"
 
@@ -57,7 +63,7 @@ namespace ExperimentalDataProcessing.Math.Distribution
                 }
 
                 var sampleMean = sum / n; // Среднее значение выборки
-                
+
                 // Нормализация с использованием ЦПТ
                 var normalizedValue = _stdDev * (sampleMean - 0.5) * System.Math.Sqrt(12 * n) + _mean;
 
@@ -71,9 +77,9 @@ namespace ExperimentalDataProcessing.Math.Distribution
         {
             var normal = new Normal(_mean, _stdDev);
 
-            var values = new double[_valuesAmount];
+            var values = new double[ValuesAmount];
 
-            for (var i = 0; i < _valuesAmount; i++)
+            for (var i = 0; i < ValuesAmount; i++)
             {
                 values[i] = normal.Sample();
             }

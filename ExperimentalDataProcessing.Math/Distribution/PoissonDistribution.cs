@@ -6,22 +6,28 @@ using MathNet.Numerics.Distributions;
 
 namespace ExperimentalDataProcessing.Math.Distribution
 {
-    public class PoissonDistribution : BaseDistribution
+    public sealed class PoissonDistribution : BaseDistribution
     {
-        private readonly int _valuesAmount;
         private readonly double _lambda;
-
-        public PoissonDistribution(int valuesAmount, double lambda)
-        {
-            _valuesAmount = valuesAmount;
-            _lambda = lambda;
-        }
-
+        
         public override bool IsDensityGraphingFromPoints { get; protected set; } = true;
+
+        public PoissonDistribution(int valuesAmount, double estimateAccuracy, double lambda)
+            : base(valuesAmount, estimateAccuracy)
+        {
+            _lambda = lambda;
+            
+            CalculateTheoreticalCharacteristics();
+        }
 
         public override void GeneratePseudorandomValues()
         {
-            PseudorandomValues = GeneratePseudorandomValuesUseFormulas();
+            do
+            {
+                PseudorandomValues = GeneratePseudorandomValuesUseFormulas();
+                CalculateExperimentalCharacteristics();
+            } while (!IsCheckPassed());
+            
             DataSaver.SaveDataToFile(PseudorandomValues, "Пуассона");
         }
 
@@ -34,23 +40,24 @@ namespace ExperimentalDataProcessing.Math.Distribution
         /// <returns></returns>
         private IEnumerable<double> GeneratePseudorandomValuesUseFormulas()
         {
-            var values = new double[_valuesAmount];
+            var values = new double[ValuesAmount];
 
             var expRateInv = System.Math.Exp(-_lambda);
-            
-            for (var i = 0; i < _valuesAmount; i++)
+
+            for (var i = 0; i < ValuesAmount; i++)
             {
                 double k = 0;
                 var prod = this.GenerateUniform();
 
-                while (prod > expRateInv) {
+                while (prod > expRateInv)
+                {
                     prod *= this.GenerateUniform();
                     ++k;
                 }
 
                 values[i] = k;
             }
-            
+
             return values;
         }
 
@@ -58,9 +65,9 @@ namespace ExperimentalDataProcessing.Math.Distribution
         {
             var exponential = new Poisson(_lambda);
 
-            var values = new double[_valuesAmount];
+            var values = new double[ValuesAmount];
 
-            for (var i = 0; i < _valuesAmount; i++)
+            for (var i = 0; i < ValuesAmount; i++)
             {
                 values[i] = exponential.Sample();
             }

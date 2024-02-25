@@ -6,33 +6,40 @@ using MathNet.Numerics.Distributions;
 
 namespace ExperimentalDataProcessing.Math.Distribution
 {
-    public class ExponentialDistribution : BaseDistribution
+    public sealed class ExponentialDistribution : BaseDistribution
     {
-        private readonly int _valuesAmount;
         private readonly double _lambda;
 
         /// <summary>
         /// Конструктор
         /// </summary>
         /// <param name="valuesAmount">Количество значений</param>
+        /// <param name="estimateAccuracy">Точность оценки</param>
         /// <param name="lambda">Параметр интенсивности (лямбда)</param>
-        public ExponentialDistribution(int valuesAmount, double lambda)
+        public ExponentialDistribution(int valuesAmount, double estimateAccuracy, double lambda)
+            : base(valuesAmount, estimateAccuracy)
         {
-            _valuesAmount = valuesAmount;
             _lambda = lambda;
+            
+            CalculateTheoreticalCharacteristics();
         }
 
         public override void GeneratePseudorandomValues()
         {
-            PseudorandomValues = GeneratePseudorandomValuesUseFormulas();
+            do
+            {
+                PseudorandomValues = GeneratePseudorandomValuesUseFormulas();
+                CalculateExperimentalCharacteristics();
+            } while (!IsCheckPassed());
+            
             DataSaver.SaveDataToFile(PseudorandomValues, "Показательное");
         }
         
         private IEnumerable<double> GeneratePseudorandomValuesUseFormulas()
         {
-            var values = new double[_valuesAmount];
+            var values = new double[ValuesAmount];
 
-            for (var i = 0; i < _valuesAmount; i++)
+            for (var i = 0; i < ValuesAmount; i++)
             {
                 values[i] = (-1 / _lambda) * System.Math.Log(this.GenerateUniform());
             }
@@ -44,9 +51,9 @@ namespace ExperimentalDataProcessing.Math.Distribution
         {
             var exponential = new Exponential(_lambda);
 
-            var values = new double[_valuesAmount];
+            var values = new double[ValuesAmount];
 
-            for (var i = 0; i < _valuesAmount; i++)
+            for (var i = 0; i < ValuesAmount; i++)
             {
                 values[i] = exponential.Sample();
             }

@@ -13,12 +13,12 @@ namespace ExperimentalDataProcessing.CommonForms.UserControls
 
         public override int InitialHeight { get; }
 
-        public override BaseDistribution GetDistribution()
+        public override BaseDistribution GetDistribution(double estimateAccuracy)
         {
             var valuesAmount = (int)System.Math.Round(valuesAmountInput.Value);
             var lambda = (double)lambdaInput.Value;
 
-            return new PoissonDistribution(valuesAmount, lambda);
+            return new PoissonDistribution(valuesAmount, estimateAccuracy, lambda);
         }
     }
 }

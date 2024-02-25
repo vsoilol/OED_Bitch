@@ -13,14 +13,14 @@ namespace ExperimentalDataProcessing.CommonForms.UserControls
 
         public override int InitialHeight { get; }
 
-        public override BaseDistribution GetDistribution()
+        public override BaseDistribution GetDistribution(double estimateAccuracy)
         {
             var valuesAmount = (int)System.Math.Round(valuesAmountInput.Value);
 
             var intervalStart = (double)intervalStartInput.Value;
             var intervalEnd = (double)intervalEndInput.Value;
 
-            return new ContinuousUniformDistribution(valuesAmount, intervalStart, intervalEnd);
+            return new ContinuousUniformDistribution(valuesAmount, estimateAccuracy,intervalStart, intervalEnd);
         }
     }
 }

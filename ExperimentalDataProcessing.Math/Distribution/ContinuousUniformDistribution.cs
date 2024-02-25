@@ -6,44 +6,50 @@ using MathNet.Numerics.Distributions;
 
 namespace ExperimentalDataProcessing.Math.Distribution
 {
-    public class ContinuousUniformDistribution : BaseDistribution
+    public sealed class ContinuousUniformDistribution : BaseDistribution
     {
-        private readonly int _valuesAmount;
         private readonly double _intervalStart;
         private readonly double _intervalEnd;
 
-        public ContinuousUniformDistribution(int valuesAmount, double intervalStart, double intervalEnd)
+        public ContinuousUniformDistribution(int valuesAmount, double estimateAccuracy, double intervalStart,
+            double intervalEnd) : base(valuesAmount, estimateAccuracy)
         {
-            _valuesAmount = valuesAmount;
             _intervalStart = intervalStart;
             _intervalEnd = intervalEnd;
+            
+            CalculateTheoreticalCharacteristics();
         }
 
         public override void GeneratePseudorandomValues()
         {
-            PseudorandomValues = GeneratePseudorandomValuesUseFormulas();
+            do
+            {
+                PseudorandomValues = GeneratePseudorandomValuesUseFormulas();
+                CalculateExperimentalCharacteristics();
+            } while (!IsCheckPassed());
+            
             DataSaver.SaveDataToFile(PseudorandomValues, "Равномерное");
         }
-        
+
         private IEnumerable<double> GeneratePseudorandomValuesUseFormulas()
         {
-            var values = new double[_valuesAmount];
+            var values = new double[ValuesAmount];
 
-            for (var i = 0; i < _valuesAmount; i++)
+            for (var i = 0; i < ValuesAmount; i++)
             {
                 values[i] = (_intervalEnd - _intervalStart) * this.GenerateUniform() + _intervalStart;
             }
 
             return values;
         }
-        
+
         private IEnumerable<double> GeneratePseudorandomValuesUseLibrary()
         {
             var continuousUniform = new ContinuousUniform(_intervalStart, _intervalEnd);
 
-            var values = new double[_valuesAmount];
+            var values = new double[ValuesAmount];
 
-            for (var i = 0; i < _valuesAmount; i++)
+            for (var i = 0; i < ValuesAmount; i++)
             {
                 values[i] = continuousUniform.Sample();
             }
@@ -56,7 +62,7 @@ namespace ExperimentalDataProcessing.Math.Distribution
             var theoreticalMean = (_intervalStart + _intervalEnd) / 2;
             var theoreticalDispersion = System.Math.Pow(_intervalEnd - _intervalStart, 2) / 12;
             var theoreticalStdDev = System.Math.Sqrt(theoreticalDispersion);
-            
+
             TheoreticalCharacteristics = new DistributionStatisticalCharacteristics
             {
                 Dispersion = theoreticalDispersion,

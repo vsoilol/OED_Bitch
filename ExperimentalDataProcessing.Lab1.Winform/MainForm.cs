@@ -44,7 +44,8 @@ namespace ExperimentalDataProcessing.Lab1.Winform
             formsPlot.Plot.Clear();
             AddAxisForPlot();
 
-            _distribution = _currentInputsPanel.GetDistribution();
+            var estimateAccuracy = (double)estimateAccuracyInput.Value;
+            _distribution = _currentInputsPanel.GetDistribution(estimateAccuracy);
 
             _distribution.GeneratePseudorandomValues();
 
@@ -68,9 +69,8 @@ namespace ExperimentalDataProcessing.Lab1.Winform
         private void DisplayParametersEstimation()
         {
             valuesResultTable.Rows.Clear();
-
-            var estimateAccuracy = (double)estimateAccuracyInput.Value;
-            var parametersEstimation = _distribution.CalculateParametersEstimation(estimateAccuracy);
+            
+            var parametersEstimation = _distribution.CalculateParametersEstimation();
 
             foreach (var parameterEstimation in parametersEstimation)
             {

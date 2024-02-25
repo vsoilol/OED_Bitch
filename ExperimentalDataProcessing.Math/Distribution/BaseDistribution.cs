@@ -8,9 +8,19 @@ namespace ExperimentalDataProcessing.Math.Distribution
     public abstract class BaseDistribution
     {
         private readonly Random _random = new Random((int)DateTime.Now.Ticks);
-        
+
+        protected BaseDistribution(int valuesAmount, double estimateAccuracy)
+        {
+            ValuesAmount = valuesAmount;
+            EstimateAccuracy = estimateAccuracy;
+        }
+
+        public double EstimateAccuracy { get; private set; }
+
+        public int ValuesAmount { get; private set; }
+
         protected double GenerateUniform() => _random.NextDouble();
-        
+
         public virtual bool IsDensityGraphingFromPoints { get; protected set; } = false;
 
         public IEnumerable<double> PseudorandomValues { get; protected set; }
@@ -48,28 +58,35 @@ namespace ExperimentalDataProcessing.Math.Distribution
             };
         }
 
+        protected virtual bool IsCheckPassed()
+        {
+            var meanDeviation =
+                CalculateParameterDeviation(ExperimentalCharacteristics.Mean, TheoreticalCharacteristics.Mean);
+            var dispersionDeviation =
+                CalculateParameterDeviation(ExperimentalCharacteristics.Dispersion,
+                    TheoreticalCharacteristics.Dispersion);
+
+            return EstimateAccuracy > meanDeviation && EstimateAccuracy > dispersionDeviation;
+        }
+
         public abstract Func<double, double?> GetDensityFunction();
 
-        public IEnumerable<ParameterEstimation> CalculateParametersEstimation(double estimateAccuracy)
+        public IEnumerable<ParameterEstimation> CalculateParametersEstimation()
         {
-            CalculateTheoreticalCharacteristics();
-            CalculateExperimentalCharacteristics();
-
-            var meanEstimation = CalculateParameterEstimation("Математическое ожидание", estimateAccuracy,
+            var meanEstimation = CalculateParameterEstimation("Математическое ожидание", EstimateAccuracy,
                 ExperimentalCharacteristics.Mean, TheoreticalCharacteristics.Mean);
 
-            var dispersionEstimation = CalculateParameterEstimation("Дисперсия", estimateAccuracy,
+            var dispersionEstimation = CalculateParameterEstimation("Дисперсия", EstimateAccuracy,
                 ExperimentalCharacteristics.Dispersion, TheoreticalCharacteristics.Dispersion);
 
             return new[] { meanEstimation, dispersionEstimation };
         }
 
-        private ParameterEstimation CalculateParameterEstimation(string name, double estimateAccuracy,
+        private static ParameterEstimation CalculateParameterEstimation(string name, double estimateAccuracy,
             double experimentalValue,
             double theoreticalValue)
         {
-            var deviation = System.Math.Abs(experimentalValue - theoreticalValue);
-
+            var deviation = CalculateParameterDeviation(experimentalValue, theoreticalValue);
             var hasPassedCheck = estimateAccuracy > deviation;
 
             return new ParameterEstimation
@@ -80,6 +97,11 @@ namespace ExperimentalDataProcessing.Math.Distribution
                 Deviation = deviation,
                 HasPassedCheck = hasPassedCheck
             };
+        }
+
+        private static double CalculateParameterDeviation(double experimentalValue, double theoreticalValue)
+        {
+            return System.Math.Abs(experimentalValue - theoreticalValue);
         }
     }
 }

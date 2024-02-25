@@ -9,6 +9,6 @@ namespace ExperimentalDataProcessing.CommonForms.UserControls
     {
         public abstract int InitialHeight { get; }
 
-        public abstract BaseDistribution GetDistribution();
+        public abstract BaseDistribution GetDistribution(double estimateAccuracy);
     }
 }
