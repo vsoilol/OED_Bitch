@@ -70,6 +70,12 @@
         <Compile Include="UserControls\PoissonDistributionInputsPanel.Designer.cs">
             <DependentUpon>PoissonDistributionInputsPanel.cs</DependentUpon>
         </Compile>
+        <Compile Include="WindowForms\WaitFormDialog.cs">
+          <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="WindowForms\WaitFormDialog.Designer.cs">
+          <DependentUpon>WaitFormDialog.cs</DependentUpon>
+        </Compile>
         <Compile Include="Сonstants\DistributionComboBoxValues.cs" />
     </ItemGroup>
     <ItemGroup>
@@ -77,6 +83,11 @@
             <Project>{3f1f484a-419f-4248-b26a-eac2ccbf0cf5}</Project>
             <Name>ExperimentalDataProcessing.Math</Name>
         </ProjectReference>
+    </ItemGroup>
+    <ItemGroup>
+      <EmbeddedResource Include="WindowForms\WaitFormDialog.resx">
+        <DependentUpon>WaitFormDialog.cs</DependentUpon>
+      </EmbeddedResource>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

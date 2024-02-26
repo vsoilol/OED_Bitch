@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using ExperimentalDataProcessing.Helpers;
 using ExperimentalDataProcessing.Math.Models;
 using MathNet.Numerics.Distributions;
@@ -23,15 +24,20 @@ namespace ExperimentalDataProcessing.Math.Distribution
         {
             _mean = mean;
             _stdDev = stdDev;
-            
+
             CalculateTheoreticalCharacteristics();
         }
 
-        public override void GeneratePseudorandomValues()
+        public override void GeneratePseudorandomValues(CancellationToken cancellationToken)
         {
             do
             {
-                PseudorandomValues = GeneratePseudorandomValuesBasedOnCentralLimitTheorem();
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    throw new OperationCanceledException();
+                }
+
+                PseudorandomValues = GeneratePseudorandomValuesBasedOnCentralLimitTheorem(cancellationToken);
                 CalculateExperimentalCharacteristics();
             } while (!IsCheckPassed());
 
@@ -48,12 +54,18 @@ namespace ExperimentalDataProcessing.Math.Distribution
         /// https://ru.wikipedia.org/wiki/%D0%A6%D0%B5%D0%BD%D1%82%D1%80%D0%B0%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F_%D0%BF%D1%80%D0%B5%D0%B4%D0%B5%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F_%D1%82%D0%B5%D0%BE%D1%80%D0%B5%D0%BC%D0%B0
         /// </summary>
         /// <returns></returns>
-        private IEnumerable<double> GeneratePseudorandomValuesBasedOnCentralLimitTheorem()
+        private IEnumerable<double> GeneratePseudorandomValuesBasedOnCentralLimitTheorem(
+            CancellationToken cancellationToken)
         {
             var values = new double[ValuesAmount];
 
             for (var i = 0; i < ValuesAmount; i++)
             {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    throw new OperationCanceledException();
+                }
+
                 var n = 100; // Количество равномерно распределенных чисел для одного "эксперимента"
 
                 double sum = 0;
@@ -73,7 +85,7 @@ namespace ExperimentalDataProcessing.Math.Distribution
             return values;
         }
 
-        private IEnumerable<double> GeneratePseudorandomValuesUseLibrary()
+        private IEnumerable<double> GeneratePseudorandomValuesUseLibrary(CancellationToken cancellationToken)
         {
             var normal = new Normal(_mean, _stdDev);
 
@@ -81,6 +93,11 @@ namespace ExperimentalDataProcessing.Math.Distribution
 
             for (var i = 0; i < ValuesAmount; i++)
             {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    throw new OperationCanceledException();
+                }
+
                 values[i] = normal.Sample();
             }
 

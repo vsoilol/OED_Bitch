@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using ExperimentalDataProcessing.Helpers;
 using ExperimentalDataProcessing.Math.Models;
 using MathNet.Numerics.Distributions;
@@ -24,30 +25,40 @@ namespace ExperimentalDataProcessing.Math.Distribution
             CalculateTheoreticalCharacteristics();
         }
 
-        public override void GeneratePseudorandomValues()
+        public override void GeneratePseudorandomValues(CancellationToken cancellationToken)
         {
             do
             {
-                PseudorandomValues = GeneratePseudorandomValuesUseFormulas();
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    throw new OperationCanceledException();
+                }
+                
+                PseudorandomValues = GeneratePseudorandomValuesUseFormulas(cancellationToken);
                 CalculateExperimentalCharacteristics();
             } while (!IsCheckPassed());
             
             DataSaver.SaveDataToFile(PseudorandomValues, "Показательное");
         }
         
-        private IEnumerable<double> GeneratePseudorandomValuesUseFormulas()
+        private IEnumerable<double> GeneratePseudorandomValuesUseFormulas(CancellationToken cancellationToken)
         {
             var values = new double[ValuesAmount];
 
             for (var i = 0; i < ValuesAmount; i++)
             {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    throw new OperationCanceledException();
+                }
+                
                 values[i] = (-1 / _lambda) * System.Math.Log(this.GenerateUniform());
             }
 
             return values;
         }
         
-        private IEnumerable<double> GeneratePseudorandomValuesUseLibrary()
+        private IEnumerable<double> GeneratePseudorandomValuesUseLibrary(CancellationToken cancellationToken)
         {
             var exponential = new Exponential(_lambda);
 
@@ -55,6 +66,11 @@ namespace ExperimentalDataProcessing.Math.Distribution
 
             for (var i = 0; i < ValuesAmount; i++)
             {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    throw new OperationCanceledException();
+                }
+                
                 values[i] = exponential.Sample();
             }
 

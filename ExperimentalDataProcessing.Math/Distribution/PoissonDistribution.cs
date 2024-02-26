@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using ExperimentalDataProcessing.Helpers;
 using ExperimentalDataProcessing.Math.Models;
 using MathNet.Numerics.Distributions;
@@ -20,11 +21,16 @@ namespace ExperimentalDataProcessing.Math.Distribution
             CalculateTheoreticalCharacteristics();
         }
 
-        public override void GeneratePseudorandomValues()
+        public override void GeneratePseudorandomValues(CancellationToken cancellationToken)
         {
             do
             {
-                PseudorandomValues = GeneratePseudorandomValuesUseFormulas();
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    throw new OperationCanceledException();
+                }
+                
+                PseudorandomValues = GeneratePseudorandomValuesUseFormulas(cancellationToken);
                 CalculateExperimentalCharacteristics();
             } while (!IsCheckPassed());
             
@@ -38,7 +44,7 @@ namespace ExperimentalDataProcessing.Math.Distribution
         /// используется произведение равномерных случайных величин:
         /// </summary>
         /// <returns></returns>
-        private IEnumerable<double> GeneratePseudorandomValuesUseFormulas()
+        private IEnumerable<double> GeneratePseudorandomValuesUseFormulas(CancellationToken cancellationToken)
         {
             var values = new double[ValuesAmount];
 
@@ -46,6 +52,11 @@ namespace ExperimentalDataProcessing.Math.Distribution
 
             for (var i = 0; i < ValuesAmount; i++)
             {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    throw new OperationCanceledException();
+                }
+                
                 double k = 0;
                 var prod = this.GenerateUniform();
 
@@ -61,7 +72,7 @@ namespace ExperimentalDataProcessing.Math.Distribution
             return values;
         }
 
-        private IEnumerable<double> GeneratePseudorandomValuesUseLibrary()
+        private IEnumerable<double> GeneratePseudorandomValuesUseLibrary(CancellationToken cancellationToken)
         {
             var exponential = new Poisson(_lambda);
 
@@ -69,6 +80,11 @@ namespace ExperimentalDataProcessing.Math.Distribution
 
             for (var i = 0; i < ValuesAmount; i++)
             {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    throw new OperationCanceledException();
+                }
+                
                 values[i] = exponential.Sample();
             }
 

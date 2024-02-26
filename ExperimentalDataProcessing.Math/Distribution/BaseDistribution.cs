@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace ExperimentalDataProcessing.Math.Distribution
 {
@@ -39,7 +40,7 @@ namespace ExperimentalDataProcessing.Math.Distribution
 
         public int MinIntValue => (int)System.Math.Round(MinValue);
 
-        public abstract void GeneratePseudorandomValues();
+        public abstract void GeneratePseudorandomValues(CancellationToken cancellationToken);
 
         protected abstract void CalculateTheoreticalCharacteristics();
 

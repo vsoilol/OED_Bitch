@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using ExperimentalDataProcessing.CommonForms.UserControls;
+using ExperimentalDataProcessing.CommonForms.WindowForms;
 using ExperimentalDataProcessing.CommonForms.Сonstants;
 using ExperimentalDataProcessing.Math.Distribution;
 using ScottPlot;
@@ -41,13 +43,25 @@ namespace ExperimentalDataProcessing.Lab1.Winform
 
         private void calculateButton_Click(object sender, EventArgs e)
         {
+            calculateButton.Enabled = false;
+
+            valuesResultTable.Rows.Clear();
             formsPlot.Plot.Clear();
             AddAxisForPlot();
 
             var estimateAccuracy = (double)estimateAccuracyInput.Value;
             _distribution = _currentInputsPanel.GetDistribution(estimateAccuracy);
+            
+            using (var waitFormDialog = new WaitFormDialog(_distribution.GeneratePseudorandomValues))
+            {
+                var dialogResult = waitFormDialog.ShowDialog(this);
 
-            _distribution.GeneratePseudorandomValues();
+                if (dialogResult == DialogResult.Cancel)
+                {
+                    calculateButton.Enabled = true;
+                    return;
+                }
+            }
 
             DrawHistogram(_distribution.PseudorandomValues, _distribution.MinIntValue, _distribution.MaxIntValue);
 
@@ -64,12 +78,12 @@ namespace ExperimentalDataProcessing.Lab1.Winform
             RefreshPlot();
 
             DisplayParametersEstimation();
+
+            calculateButton.Enabled = true;
         }
 
         private void DisplayParametersEstimation()
         {
-            valuesResultTable.Rows.Clear();
-            
             var parametersEstimation = _distribution.CalculateParametersEstimation();
 
             foreach (var parameterEstimation in parametersEstimation)

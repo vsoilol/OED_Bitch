@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using ExperimentalDataProcessing.Helpers;
 using ExperimentalDataProcessing.Math.Models;
 using MathNet.Numerics.Distributions;
@@ -20,30 +21,40 @@ namespace ExperimentalDataProcessing.Math.Distribution
             CalculateTheoreticalCharacteristics();
         }
 
-        public override void GeneratePseudorandomValues()
+        public override void GeneratePseudorandomValues(CancellationToken cancellationToken)
         {
             do
             {
-                PseudorandomValues = GeneratePseudorandomValuesUseFormulas();
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    throw new OperationCanceledException();
+                }
+                
+                PseudorandomValues = GeneratePseudorandomValuesUseFormulas(cancellationToken);
                 CalculateExperimentalCharacteristics();
             } while (!IsCheckPassed());
             
             DataSaver.SaveDataToFile(PseudorandomValues, "Равномерное");
         }
 
-        private IEnumerable<double> GeneratePseudorandomValuesUseFormulas()
+        private IEnumerable<double> GeneratePseudorandomValuesUseFormulas(CancellationToken cancellationToken)
         {
             var values = new double[ValuesAmount];
 
             for (var i = 0; i < ValuesAmount; i++)
             {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    throw new OperationCanceledException();
+                }
+                
                 values[i] = (_intervalEnd - _intervalStart) * this.GenerateUniform() + _intervalStart;
             }
 
             return values;
         }
 
-        private IEnumerable<double> GeneratePseudorandomValuesUseLibrary()
+        private IEnumerable<double> GeneratePseudorandomValuesUseLibrary(CancellationToken cancellationToken)
         {
             var continuousUniform = new ContinuousUniform(_intervalStart, _intervalEnd);
 
@@ -51,6 +62,11 @@ namespace ExperimentalDataProcessing.Math.Distribution
 
             for (var i = 0; i < ValuesAmount; i++)
             {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    throw new OperationCanceledException();
+                }
+                
                 values[i] = continuousUniform.Sample();
             }
 
