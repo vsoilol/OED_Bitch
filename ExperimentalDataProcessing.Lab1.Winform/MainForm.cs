@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 using ExperimentalDataProcessing.CommonForms.UserControls;
 using ExperimentalDataProcessing.CommonForms.WindowForms;
@@ -50,9 +50,14 @@ namespace ExperimentalDataProcessing.Lab1.Winform
             AddAxisForPlot();
 
             var estimateAccuracy = (double)estimateAccuracyInput.Value;
-            _distribution = _currentInputsPanel.GetDistribution(estimateAccuracy);
-            
-            using (var waitFormDialog = new WaitFormDialog(_distribution.GeneratePseudorandomValues))
+            _distribution = _currentInputsPanel.GetDistribution();
+
+            var valuesAmount = (int)System.Math.Round(valuesAmountInput.Value);
+
+            Action<CancellationToken> generatePseudorandomValuesWorker = cancellationToken =>
+                _distribution.GeneratePseudorandomValues(valuesAmount, estimateAccuracy, cancellationToken);
+
+            using (var waitFormDialog = new WaitFormDialog(generatePseudorandomValuesWorker))
             {
                 var dialogResult = waitFormDialog.ShowDialog(this);
 
@@ -66,25 +71,22 @@ namespace ExperimentalDataProcessing.Lab1.Winform
             DrawHistogram(_distribution.PseudorandomValues, _distribution.MinIntValue, _distribution.MaxIntValue);
 
             if (_distribution.IsDensityGraphingFromPoints)
-            {
                 DrawFunctionByDots(_distribution.GetDensityFunction(), _distribution.MinIntValue,
                     _distribution.MaxIntValue);
-            }
             else
-            {
                 DrawFunction(_distribution.GetDensityFunction());
-            }
 
             RefreshPlot();
 
-            DisplayParametersEstimation();
+            DisplayParametersEstimation(estimateAccuracy);
 
             calculateButton.Enabled = true;
         }
 
-        private void DisplayParametersEstimation()
+        private void DisplayParametersEstimation(double estimateAccuracy)
         {
-            var parametersEstimation = _distribution.CalculateParametersEstimation();
+            var parametersEstimation = _distribution
+                .CalculateParametersEstimation(estimateAccuracy);
 
             foreach (var parameterEstimation in parametersEstimation)
             {

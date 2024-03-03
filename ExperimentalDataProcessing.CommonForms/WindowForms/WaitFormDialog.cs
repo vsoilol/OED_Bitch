@@ -9,16 +9,16 @@ namespace ExperimentalDataProcessing.CommonForms.WindowForms
     {
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
-        public CancellationToken CancellationToken => _cancellationTokenSource.Token;
-
-        public Action<CancellationToken> Worker { get; private set; }
-
         public WaitFormDialog(Action<CancellationToken> worker)
         {
             InitializeComponent();
 
             Worker = worker;
         }
+
+        public CancellationToken CancellationToken => _cancellationTokenSource.Token;
+
+        public Action<CancellationToken> Worker { get; }
 
         private void cancelButton_Click(object sender, EventArgs e)
         {

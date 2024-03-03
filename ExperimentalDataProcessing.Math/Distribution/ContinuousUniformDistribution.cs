@@ -9,64 +9,57 @@ namespace ExperimentalDataProcessing.Math.Distribution
 {
     public sealed class ContinuousUniformDistribution : BaseDistribution
     {
-        private readonly double _intervalStart;
         private readonly double _intervalEnd;
+        private readonly double _intervalStart;
 
-        public ContinuousUniformDistribution(int valuesAmount, double estimateAccuracy, double intervalStart,
-            double intervalEnd) : base(valuesAmount, estimateAccuracy)
+        public ContinuousUniformDistribution(double intervalStart, double intervalEnd)
         {
             _intervalStart = intervalStart;
             _intervalEnd = intervalEnd;
-            
+
             CalculateTheoreticalCharacteristics();
         }
 
-        public override void GeneratePseudorandomValues(CancellationToken cancellationToken)
+        public override void GeneratePseudorandomValues(int valuesAmount, double estimateAccuracy,
+            CancellationToken cancellationToken)
         {
             do
             {
-                if (cancellationToken.IsCancellationRequested)
-                {
-                    throw new OperationCanceledException();
-                }
-                
-                PseudorandomValues = GeneratePseudorandomValuesUseFormulas(cancellationToken);
+                if (cancellationToken.IsCancellationRequested) throw new OperationCanceledException();
+
+                PseudorandomValues = GeneratePseudorandomValuesUseFormulas(valuesAmount, cancellationToken);
                 CalculateExperimentalCharacteristics();
-            } while (!IsCheckPassed());
-            
+            } while (!IsCheckPassed(estimateAccuracy));
+
             DataSaver.SaveDataToFile(PseudorandomValues, "Равномерное");
         }
 
-        private IEnumerable<double> GeneratePseudorandomValuesUseFormulas(CancellationToken cancellationToken)
+        private IEnumerable<double> GeneratePseudorandomValuesUseFormulas(int valuesAmount,
+            CancellationToken cancellationToken)
         {
-            var values = new double[ValuesAmount];
+            var values = new double[valuesAmount];
 
-            for (var i = 0; i < ValuesAmount; i++)
+            for (var i = 0; i < valuesAmount; i++)
             {
-                if (cancellationToken.IsCancellationRequested)
-                {
-                    throw new OperationCanceledException();
-                }
-                
-                values[i] = (_intervalEnd - _intervalStart) * this.GenerateUniform() + _intervalStart;
+                if (cancellationToken.IsCancellationRequested) throw new OperationCanceledException();
+
+                values[i] = (_intervalEnd - _intervalStart) * GenerateUniform() + _intervalStart;
             }
 
             return values;
         }
 
-        private IEnumerable<double> GeneratePseudorandomValuesUseLibrary(CancellationToken cancellationToken)
+        private IEnumerable<double> GeneratePseudorandomValuesUseLibrary(int valuesAmount,
+            CancellationToken cancellationToken)
         {
             var continuousUniform = new ContinuousUniform(_intervalStart, _intervalEnd);
 
-            var values = new double[ValuesAmount];
+            var values = new double[valuesAmount];
 
-            for (var i = 0; i < ValuesAmount; i++)
+            for (var i = 0; i < valuesAmount; i++)
             {
-                if (cancellationToken.IsCancellationRequested)
-                {
-                    throw new OperationCanceledException();
-                }
-                
+                if (cancellationToken.IsCancellationRequested) throw new OperationCanceledException();
+
                 values[i] = continuousUniform.Sample();
             }
 
@@ -94,8 +87,13 @@ namespace ExperimentalDataProcessing.Math.Distribution
             return densityFunction;
         }
 
+        protected override double CalculateIntervalHitProbability(double intervalStart, double intervalEnd)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
-        /// Функцию плотности равномерного распределения
+        ///     Функцию плотности равномерного распределения
         /// </summary>
         /// <param name="x">X</param>
         /// <param name="intervalStart">Начало интервала</param>
@@ -103,10 +101,7 @@ namespace ExperimentalDataProcessing.Math.Distribution
         /// <returns></returns>
         private static double ContinuousUniformDensity(double x, double intervalStart, double intervalEnd)
         {
-            if (x >= intervalStart && x <= intervalEnd)
-            {
-                return 1 / (intervalEnd - intervalStart);
-            }
+            if (x >= intervalStart && x <= intervalEnd) return 1 / (intervalEnd - intervalStart);
 
             return 0;
         }

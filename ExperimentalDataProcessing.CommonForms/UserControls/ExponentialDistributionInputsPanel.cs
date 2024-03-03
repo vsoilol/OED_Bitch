@@ -8,17 +8,16 @@ namespace ExperimentalDataProcessing.CommonForms.UserControls
         {
             InitializeComponent();
 
-            InitialHeight = panel1.Height;
+            InitialHeight = Height;
         }
 
         public override int InitialHeight { get; }
 
-        public override BaseDistribution GetDistribution(double estimateAccuracy)
+        public override BaseDistribution GetDistribution()
         {
-            var valuesAmount = (int)System.Math.Round(valuesAmountInput.Value);
             var lambda = (double)lambdaInput.Value;
 
-            return new ExponentialDistribution(valuesAmount, estimateAccuracy, lambda);
+            return new ExponentialDistribution(lambda);
         }
     }
 }

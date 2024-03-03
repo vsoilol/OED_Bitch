@@ -30,10 +30,7 @@ namespace ExperimentalDataProcessing.Helpers
 
             using (var writer = new StreamWriter(filePath))
             {
-                foreach (var x in xs)
-                {
-                    writer.WriteLine($"{x}");
-                }
+                foreach (var x in xs) writer.WriteLine($"{x}");
             }
         }
     }

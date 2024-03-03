@@ -3,17 +3,17 @@
     public class DistributionStatisticalCharacteristics
     {
         /// <summary>
-        /// Математическое ожидание
+        ///     Математическое ожидание
         /// </summary>
         public double Mean { get; set; }
 
         /// <summary>
-        /// Среднеквадратическое отклонение
+        ///     Среднеквадратическое отклонение
         /// </summary>
         public double StdDev { get; set; }
 
         /// <summary>
-        /// Дисперсия
+        ///     Дисперсия
         /// </summary>
         public double Dispersion { get; set; }
     }

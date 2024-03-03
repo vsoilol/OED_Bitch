@@ -10,59 +10,54 @@ namespace ExperimentalDataProcessing.Math.Distribution
     public sealed class PoissonDistribution : BaseDistribution
     {
         private readonly double _lambda;
-        
-        public override bool IsDensityGraphingFromPoints { get; protected set; } = true;
 
-        public PoissonDistribution(int valuesAmount, double estimateAccuracy, double lambda)
-            : base(valuesAmount, estimateAccuracy)
+        public PoissonDistribution(double lambda)
         {
             _lambda = lambda;
-            
+
             CalculateTheoreticalCharacteristics();
         }
 
-        public override void GeneratePseudorandomValues(CancellationToken cancellationToken)
+        public override bool IsDensityGraphingFromPoints { get; protected set; } = true;
+
+        public override void GeneratePseudorandomValues(int valuesAmount, double estimateAccuracy,
+            CancellationToken cancellationToken)
         {
             do
             {
-                if (cancellationToken.IsCancellationRequested)
-                {
-                    throw new OperationCanceledException();
-                }
-                
-                PseudorandomValues = GeneratePseudorandomValuesUseFormulas(cancellationToken);
+                if (cancellationToken.IsCancellationRequested) throw new OperationCanceledException();
+
+                PseudorandomValues = GeneratePseudorandomValuesUseFormulas(valuesAmount, cancellationToken);
                 CalculateExperimentalCharacteristics();
-            } while (!IsCheckPassed());
-            
+            } while (!IsCheckPassed(estimateAccuracy));
+
             DataSaver.SaveDataToFile(PseudorandomValues, "Пуассона");
         }
 
         /// <summary>
-        /// На этом же свойстве основан популярный алгоритм Кнута.
-        /// Вместо суммы экспоненциальных величин, каждую из которых можно получить
-        /// методом инверсии через -ln(U),
-        /// используется произведение равномерных случайных величин:
+        ///     На этом же свойстве основан популярный алгоритм Кнута.
+        ///     Вместо суммы экспоненциальных величин, каждую из которых можно получить
+        ///     методом инверсии через -ln(U),
+        ///     используется произведение равномерных случайных величин:
         /// </summary>
         /// <returns></returns>
-        private IEnumerable<double> GeneratePseudorandomValuesUseFormulas(CancellationToken cancellationToken)
+        private IEnumerable<double> GeneratePseudorandomValuesUseFormulas(int valuesAmount,
+            CancellationToken cancellationToken)
         {
-            var values = new double[ValuesAmount];
+            var values = new double[valuesAmount];
 
             var expRateInv = System.Math.Exp(-_lambda);
 
-            for (var i = 0; i < ValuesAmount; i++)
+            for (var i = 0; i < valuesAmount; i++)
             {
-                if (cancellationToken.IsCancellationRequested)
-                {
-                    throw new OperationCanceledException();
-                }
-                
+                if (cancellationToken.IsCancellationRequested) throw new OperationCanceledException();
+
                 double k = 0;
-                var prod = this.GenerateUniform();
+                var prod = GenerateUniform();
 
                 while (prod > expRateInv)
                 {
-                    prod *= this.GenerateUniform();
+                    prod *= GenerateUniform();
                     ++k;
                 }
 
@@ -72,19 +67,17 @@ namespace ExperimentalDataProcessing.Math.Distribution
             return values;
         }
 
-        private IEnumerable<double> GeneratePseudorandomValuesUseLibrary(CancellationToken cancellationToken)
+        private IEnumerable<double> GeneratePseudorandomValuesUseLibrary(int valuesAmount,
+            CancellationToken cancellationToken)
         {
             var exponential = new Poisson(_lambda);
 
-            var values = new double[ValuesAmount];
+            var values = new double[valuesAmount];
 
-            for (var i = 0; i < ValuesAmount; i++)
+            for (var i = 0; i < valuesAmount; i++)
             {
-                if (cancellationToken.IsCancellationRequested)
-                {
-                    throw new OperationCanceledException();
-                }
-                
+                if (cancellationToken.IsCancellationRequested) throw new OperationCanceledException();
+
                 values[i] = exponential.Sample();
             }
 
@@ -111,8 +104,16 @@ namespace ExperimentalDataProcessing.Math.Distribution
             return densityFunction;
         }
 
+        protected override double CalculateIntervalHitProbability(double intervalStart, double intervalEnd)
+        {
+            var hitProbability = System.Math.Exp(-1 * _lambda * intervalStart)
+                                 - System.Math.Exp(-1 * _lambda * intervalEnd);
+
+            return hitProbability;
+        }
+
         /// <summary>
-        /// Функцию плотности распределения Пуассона
+        ///     Функцию плотности распределения Пуассона
         /// </summary>
         /// <param name="x">X</param>
         /// <param name="lambda">Ламбда</param>
@@ -120,10 +121,7 @@ namespace ExperimentalDataProcessing.Math.Distribution
         private double PoissonDensity(double x, double lambda)
         {
             double factorial = 1;
-            for (var i = 2; i <= x; i++)
-            {
-                factorial *= i;
-            }
+            for (var i = 2; i <= x; i++) factorial *= i;
 
             return System.Math.Pow(lambda, x) * System.Math.Exp(-lambda) / factorial;
         }

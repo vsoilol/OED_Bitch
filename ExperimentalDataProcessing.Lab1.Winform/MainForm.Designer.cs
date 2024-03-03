@@ -48,6 +48,8 @@ namespace ExperimentalDataProcessing.Lab1.Winform
             this.inputsContainerPanel = new System.Windows.Forms.Panel();
             this.estimateAccuracyInput = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
+            this.valuesAmountInput = new System.Windows.Forms.NumericUpDown();
+            this.label4 = new System.Windows.Forms.Label();
             this.distributionComboBox = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.formsPlot = new ScottPlot.FormsPlot();
@@ -55,6 +57,7 @@ namespace ExperimentalDataProcessing.Lab1.Winform
             ((System.ComponentModel.ISupportInitialize)(this.valuesResultTable)).BeginInit();
             this.valuesPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.estimateAccuracyInput)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.valuesAmountInput)).BeginInit();
             this.SuspendLayout();
             // 
             // valuesResultPanel
@@ -176,6 +179,8 @@ namespace ExperimentalDataProcessing.Lab1.Winform
             this.valuesPanel.Controls.Add(this.inputsContainerPanel);
             this.valuesPanel.Controls.Add(this.estimateAccuracyInput);
             this.valuesPanel.Controls.Add(this.label3);
+            this.valuesPanel.Controls.Add(this.valuesAmountInput);
+            this.valuesPanel.Controls.Add(this.label4);
             this.valuesPanel.Controls.Add(this.distributionComboBox);
             this.valuesPanel.Controls.Add(this.label2);
             this.valuesPanel.Dock = System.Windows.Forms.DockStyle.Left;
@@ -188,10 +193,10 @@ namespace ExperimentalDataProcessing.Lab1.Winform
             // calculateButton
             // 
             this.calculateButton.Dock = System.Windows.Forms.DockStyle.Top;
-            this.calculateButton.Location = new System.Drawing.Point(8, 170);
+            this.calculateButton.Location = new System.Drawing.Point(8, 212);
             this.calculateButton.Name = "calculateButton";
             this.calculateButton.Size = new System.Drawing.Size(358, 41);
-            this.calculateButton.TabIndex = 31;
+            this.calculateButton.TabIndex = 48;
             this.calculateButton.Text = "Рассчитать";
             this.calculateButton.UseVisualStyleBackColor = true;
             this.calculateButton.Click += new System.EventHandler(this.calculateButton_Click);
@@ -200,29 +205,49 @@ namespace ExperimentalDataProcessing.Lab1.Winform
             // 
             this.inputsContainerPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.inputsContainerPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.inputsContainerPanel.Location = new System.Drawing.Point(8, 97);
+            this.inputsContainerPanel.Location = new System.Drawing.Point(8, 139);
             this.inputsContainerPanel.Name = "inputsContainerPanel";
             this.inputsContainerPanel.Size = new System.Drawing.Size(358, 73);
-            this.inputsContainerPanel.TabIndex = 30;
+            this.inputsContainerPanel.TabIndex = 42;
             // 
             // estimateAccuracyInput
             // 
             this.estimateAccuracyInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.estimateAccuracyInput.DecimalPlaces = 3;
             this.estimateAccuracyInput.Dock = System.Windows.Forms.DockStyle.Top;
-            this.estimateAccuracyInput.Location = new System.Drawing.Point(8, 75);
+            this.estimateAccuracyInput.Location = new System.Drawing.Point(8, 117);
             this.estimateAccuracyInput.Name = "estimateAccuracyInput";
             this.estimateAccuracyInput.Size = new System.Drawing.Size(358, 22);
-            this.estimateAccuracyInput.TabIndex = 16;
+            this.estimateAccuracyInput.TabIndex = 35;
             // 
             // label3
             // 
             this.label3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label3.Location = new System.Drawing.Point(8, 55);
+            this.label3.Location = new System.Drawing.Point(8, 97);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(358, 20);
-            this.label3.TabIndex = 3;
+            this.label3.TabIndex = 34;
             this.label3.Text = "Точность оценки";
+            // 
+            // valuesAmountInput
+            // 
+            this.valuesAmountInput.Dock = System.Windows.Forms.DockStyle.Top;
+            this.valuesAmountInput.Location = new System.Drawing.Point(8, 75);
+            this.valuesAmountInput.Maximum = new decimal(new int[] { 10000000, 0, 0, 0 });
+            this.valuesAmountInput.Minimum = new decimal(new int[] { 10, 0, 0, 0 });
+            this.valuesAmountInput.Name = "valuesAmountInput";
+            this.valuesAmountInput.Size = new System.Drawing.Size(358, 22);
+            this.valuesAmountInput.TabIndex = 33;
+            this.valuesAmountInput.Value = new decimal(new int[] { 10, 0, 0, 0 });
+            // 
+            // label4
+            // 
+            this.label4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label4.Location = new System.Drawing.Point(8, 55);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(358, 20);
+            this.label4.TabIndex = 32;
+            this.label4.Text = "Количество точек";
             // 
             // distributionComboBox
             // 
@@ -268,12 +293,16 @@ namespace ExperimentalDataProcessing.Lab1.Winform
             ((System.ComponentModel.ISupportInitialize)(this.valuesResultTable)).EndInit();
             this.valuesPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.estimateAccuracyInput)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.valuesAmountInput)).EndInit();
             this.ResumeLayout(false);
         }
 
         private System.Windows.Forms.Button calculateButton;
 
         private System.Windows.Forms.Panel inputsContainerPanel;
+
+        private System.Windows.Forms.NumericUpDown valuesAmountInput;
+        private System.Windows.Forms.Label label4;
 
         private System.Windows.Forms.NumericUpDown estimateAccuracyInput;
 

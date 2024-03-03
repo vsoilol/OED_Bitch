@@ -12,65 +12,58 @@ namespace ExperimentalDataProcessing.Math.Distribution
         private readonly double _lambda;
 
         /// <summary>
-        /// Конструктор
+        ///     Конструктор
         /// </summary>
         /// <param name="valuesAmount">Количество значений</param>
         /// <param name="estimateAccuracy">Точность оценки</param>
         /// <param name="lambda">Параметр интенсивности (лямбда)</param>
-        public ExponentialDistribution(int valuesAmount, double estimateAccuracy, double lambda)
-            : base(valuesAmount, estimateAccuracy)
+        public ExponentialDistribution(double lambda)
         {
             _lambda = lambda;
-            
+
             CalculateTheoreticalCharacteristics();
         }
 
-        public override void GeneratePseudorandomValues(CancellationToken cancellationToken)
+        public override void GeneratePseudorandomValues(int valuesAmount, double estimateAccuracy,
+            CancellationToken cancellationToken)
         {
             do
             {
-                if (cancellationToken.IsCancellationRequested)
-                {
-                    throw new OperationCanceledException();
-                }
-                
-                PseudorandomValues = GeneratePseudorandomValuesUseFormulas(cancellationToken);
+                if (cancellationToken.IsCancellationRequested) throw new OperationCanceledException();
+
+                PseudorandomValues = GeneratePseudorandomValuesUseFormulas(valuesAmount, cancellationToken);
                 CalculateExperimentalCharacteristics();
-            } while (!IsCheckPassed());
-            
+            } while (!IsCheckPassed(estimateAccuracy));
+
             DataSaver.SaveDataToFile(PseudorandomValues, "Показательное");
         }
-        
-        private IEnumerable<double> GeneratePseudorandomValuesUseFormulas(CancellationToken cancellationToken)
-        {
-            var values = new double[ValuesAmount];
 
-            for (var i = 0; i < ValuesAmount; i++)
+        private IEnumerable<double> GeneratePseudorandomValuesUseFormulas(int valuesAmount,
+            CancellationToken cancellationToken)
+        {
+            var values = new double[valuesAmount];
+
+            for (var i = 0; i < valuesAmount; i++)
             {
-                if (cancellationToken.IsCancellationRequested)
-                {
-                    throw new OperationCanceledException();
-                }
-                
-                values[i] = (-1 / _lambda) * System.Math.Log(this.GenerateUniform());
+                if (cancellationToken.IsCancellationRequested) throw new OperationCanceledException();
+
+                values[i] = -1 / _lambda * System.Math.Log(GenerateUniform());
             }
 
             return values;
         }
-        
-        private IEnumerable<double> GeneratePseudorandomValuesUseLibrary(CancellationToken cancellationToken)
+
+        private IEnumerable<double> GeneratePseudorandomValuesUseLibrary(int valuesAmount,
+            CancellationToken cancellationToken)
         {
             var exponential = new Exponential(_lambda);
 
-            var values = new double[ValuesAmount];
+            var values = new double[valuesAmount];
 
-            for (var i = 0; i < ValuesAmount; i++)
+            for (var i = 0; i < valuesAmount; i++)
             {
-                if (cancellationToken.IsCancellationRequested)
-                {
-                    throw new OperationCanceledException();
-                }
-                
+                if (cancellationToken.IsCancellationRequested) throw new OperationCanceledException();
+
                 values[i] = exponential.Sample();
             }
 
@@ -97,18 +90,23 @@ namespace ExperimentalDataProcessing.Math.Distribution
             return densityFunction;
         }
 
+        protected override double CalculateIntervalHitProbability(double intervalStart, double intervalEnd)
+        {
+            var hitProbability = System.Math.Exp(-1 * _lambda * intervalStart)
+                                 - System.Math.Exp(-1 * _lambda * intervalEnd);
+
+            return hitProbability;
+        }
+
         /// <summary>
-        /// Функцию плотности нормального распределения
+        ///     Функцию плотности нормального распределения
         /// </summary>
         /// <param name="x">X</param>
         /// <param name="lambda">Параметр интенсивности (лямбда)</param>
         /// <returns></returns>
         private static double ExponentialDensity(double x, double lambda)
         {
-            if (x < 0)
-            {
-                return 0;
-            }
+            if (x < 0) return 0;
 
             return lambda * System.Math.Exp(-lambda * x);
         }
