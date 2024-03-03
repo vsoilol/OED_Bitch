@@ -9,12 +9,12 @@ namespace ExperimentalDataProcessing.Math.Models
         /// <summary>
         ///     Критическое значение
         /// </summary>
-        public double CriticalChiSquareValue { get; set; }
+        public decimal CriticalChiSquareValue { get; set; }
 
         /// <summary>
         ///     Критерий согласия
         /// </summary>
-        public double CriterionOfConsent { get; set; }
+        public decimal CriterionOfConsent { get; set; }
 
         /// <summary>
         ///     Число степень свободы

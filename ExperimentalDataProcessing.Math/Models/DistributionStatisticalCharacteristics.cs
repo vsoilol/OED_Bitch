@@ -5,16 +5,16 @@
         /// <summary>
         ///     Математическое ожидание
         /// </summary>
-        public double Mean { get; set; }
+        public decimal Mean { get; set; }
 
         /// <summary>
         ///     Среднеквадратическое отклонение
         /// </summary>
-        public double StdDev { get; set; }
+        public decimal StdDev { get; set; }
 
         /// <summary>
         ///     Дисперсия
         /// </summary>
-        public double Dispersion { get; set; }
+        public decimal Dispersion { get; set; }
     }
 }

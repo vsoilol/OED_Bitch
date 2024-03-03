@@ -10,9 +10,19 @@ namespace ExperimentalDataProcessing.Math.Distribution
     {
         private readonly Random _random = new Random((int)DateTime.Now.Ticks);
 
+        private IEnumerable<decimal> _pseudorandomValues;
+
         public virtual bool IsDensityGraphingFromPoints { get; protected set; } = false;
 
-        public IEnumerable<double> PseudorandomValues { get; set; }
+        public IEnumerable<decimal> PseudorandomValues
+        {
+            get => _pseudorandomValues;
+            set
+            {
+                _pseudorandomValues = value;
+                CalculateExperimentalCharacteristics();
+            }
+        }
 
         public DistributionStatisticalCharacteristics TheoreticalCharacteristics { get; protected set; } =
             new DistributionStatisticalCharacteristics();
@@ -20,30 +30,31 @@ namespace ExperimentalDataProcessing.Math.Distribution
         public DistributionStatisticalCharacteristics ExperimentalCharacteristics { get; protected set; } =
             new DistributionStatisticalCharacteristics();
 
-        public double MaxValue => PseudorandomValues.Max() + 10;
+        public decimal MaxValue => PseudorandomValues.Max() + 10;
 
-        public double MinValue => PseudorandomValues.Min() - 10;
+        public decimal MinValue => PseudorandomValues.Min() - 10;
 
         public int MaxIntValue => (int)System.Math.Round(MaxValue);
 
         public int MinIntValue => (int)System.Math.Round(MinValue);
 
-        protected double GenerateUniform()
+        protected decimal GenerateUniform()
         {
-            return _random.NextDouble();
+            return (decimal)_random.NextDouble();
         }
 
-        public abstract void GeneratePseudorandomValues(int valuesAmount, double estimateAccuracy,
+        public abstract void GeneratePseudorandomValues(int valuesAmount, decimal estimateAccuracy,
             CancellationToken cancellationToken);
 
         protected abstract void CalculateTheoreticalCharacteristics();
 
-        protected virtual void CalculateExperimentalCharacteristics()
+        private void CalculateExperimentalCharacteristics()
         {
             var experimentalMean = PseudorandomValues.Sum() / PseudorandomValues.Count();
-            var experimentalDispersion = PseudorandomValues.Sum(_ => System.Math.Pow(_ - experimentalMean, 2)) /
-                                         (PseudorandomValues.Count() - 1);
-            var experimentalStdDev = System.Math.Sqrt(experimentalDispersion);
+            var experimentalDispersion =
+                PseudorandomValues.Sum(_ => MathHelper.Pow(_ - experimentalMean, 2)) /
+                (PseudorandomValues.Count() - 1);
+            var experimentalStdDev = MathHelper.Sqrt(experimentalDispersion);
 
             ExperimentalCharacteristics = new DistributionStatisticalCharacteristics
             {
@@ -53,7 +64,7 @@ namespace ExperimentalDataProcessing.Math.Distribution
             };
         }
 
-        protected virtual bool IsCheckPassed(double estimateAccuracy)
+        protected virtual bool IsCheckPassed(decimal estimateAccuracy)
         {
             var meanDeviation =
                 CalculateParameterDeviation(ExperimentalCharacteristics.Mean, TheoreticalCharacteristics.Mean);
@@ -64,9 +75,9 @@ namespace ExperimentalDataProcessing.Math.Distribution
             return estimateAccuracy > meanDeviation && estimateAccuracy > dispersionDeviation;
         }
 
-        public abstract Func<double, double?> GetDensityFunction();
+        public abstract Func<double, decimal?> GetDensityFunction();
 
-        public IEnumerable<ParameterEstimation> CalculateParametersEstimation(double estimateAccuracy)
+        public IEnumerable<ParameterEstimation> CalculateParametersEstimation(decimal estimateAccuracy)
         {
             var meanEstimation = CalculateParameterEstimation("Математическое ожидание", estimateAccuracy,
                 ExperimentalCharacteristics.Mean, TheoreticalCharacteristics.Mean);
@@ -77,9 +88,9 @@ namespace ExperimentalDataProcessing.Math.Distribution
             return new[] { meanEstimation, dispersionEstimation };
         }
 
-        private static ParameterEstimation CalculateParameterEstimation(string name, double estimateAccuracy,
-            double experimentalValue,
-            double theoreticalValue)
+        private static ParameterEstimation CalculateParameterEstimation(string name, decimal estimateAccuracy,
+            decimal experimentalValue,
+            decimal theoreticalValue)
         {
             var deviation = CalculateParameterDeviation(experimentalValue, theoreticalValue);
             var hasPassedCheck = estimateAccuracy > deviation;
@@ -94,7 +105,7 @@ namespace ExperimentalDataProcessing.Math.Distribution
             };
         }
 
-        private static double CalculateParameterDeviation(double experimentalValue, double theoreticalValue)
+        private static decimal CalculateParameterDeviation(decimal experimentalValue, decimal theoreticalValue)
         {
             return System.Math.Abs(experimentalValue - theoreticalValue);
         }
@@ -106,7 +117,7 @@ namespace ExperimentalDataProcessing.Math.Distribution
         /// <param name="manualIntervalsAmount">Количество интервалов</param>
         /// <returns></returns>
         public VerifyHypothesisDistributionResult VerifyHypothesisDistribution(
-            double significanceLevel, int? manualIntervalsAmount = null)
+            decimal significanceLevel, int? manualIntervalsAmount = null)
         {
             var intervalStart = PseudorandomValues.Min();
 
@@ -120,7 +131,7 @@ namespace ExperimentalDataProcessing.Math.Distribution
 
             var intervalStep = (intervalEnd - intervalStart) / intervalsAmount;
 
-            double criterionOfConsent = 0;
+            decimal criterionOfConsent = 0;
 
             for (var i = 1; i <= intervalsAmount; i++)
             {
@@ -134,14 +145,14 @@ namespace ExperimentalDataProcessing.Math.Distribution
 
                 var theoreticalFrequencies = hitProbability * valuesAmount;
 
-                criterionOfConsent += System.Math.Pow(theoreticalFrequencies - partValuesCount, 2) /
+                criterionOfConsent += MathHelper.Pow(theoreticalFrequencies - partValuesCount, 2) /
                                       theoreticalFrequencies;
 
                 intervalsInfo.Add(new IntervalHypothesisDistributionInfo
                 {
                     IntervalNumber = i,
                     IntervalStart = intervalPartStart,
-                    IntervalEnd = intervalEnd,
+                    IntervalEnd = intervalPartEnd,
                     ValuesCount = partValuesCount,
                     HitProbability = hitProbability,
                     TheoreticalFrequencies = theoreticalFrequencies
@@ -163,6 +174,6 @@ namespace ExperimentalDataProcessing.Math.Distribution
             };
         }
 
-        protected abstract double CalculateIntervalHitProbability(double intervalStart, double intervalEnd);
+        protected abstract decimal CalculateIntervalHitProbability(decimal intervalStart, decimal intervalEnd);
     }
 }

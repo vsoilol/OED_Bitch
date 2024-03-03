@@ -9,22 +9,20 @@ namespace ExperimentalDataProcessing.Math.Distribution
 {
     public sealed class ExponentialDistribution : BaseDistribution
     {
-        private readonly double _lambda;
+        private readonly decimal _lambda;
 
         /// <summary>
         ///     Конструктор
         /// </summary>
-        /// <param name="valuesAmount">Количество значений</param>
-        /// <param name="estimateAccuracy">Точность оценки</param>
         /// <param name="lambda">Параметр интенсивности (лямбда)</param>
-        public ExponentialDistribution(double lambda)
+        public ExponentialDistribution(decimal lambda)
         {
             _lambda = lambda;
 
             CalculateTheoreticalCharacteristics();
         }
 
-        public override void GeneratePseudorandomValues(int valuesAmount, double estimateAccuracy,
+        public override void GeneratePseudorandomValues(int valuesAmount, decimal estimateAccuracy,
             CancellationToken cancellationToken)
         {
             do
@@ -32,39 +30,38 @@ namespace ExperimentalDataProcessing.Math.Distribution
                 if (cancellationToken.IsCancellationRequested) throw new OperationCanceledException();
 
                 PseudorandomValues = GeneratePseudorandomValuesUseFormulas(valuesAmount, cancellationToken);
-                CalculateExperimentalCharacteristics();
             } while (!IsCheckPassed(estimateAccuracy));
 
             DataSaver.SaveDataToFile(PseudorandomValues, "Показательное");
         }
 
-        private IEnumerable<double> GeneratePseudorandomValuesUseFormulas(int valuesAmount,
+        private IEnumerable<decimal> GeneratePseudorandomValuesUseFormulas(int valuesAmount,
             CancellationToken cancellationToken)
         {
-            var values = new double[valuesAmount];
+            var values = new decimal[valuesAmount];
 
             for (var i = 0; i < valuesAmount; i++)
             {
                 if (cancellationToken.IsCancellationRequested) throw new OperationCanceledException();
 
-                values[i] = -1 / _lambda * System.Math.Log(GenerateUniform());
+                values[i] = -1 / _lambda * MathHelper.Log(GenerateUniform());
             }
 
             return values;
         }
 
-        private IEnumerable<double> GeneratePseudorandomValuesUseLibrary(int valuesAmount,
+        private IEnumerable<decimal> GeneratePseudorandomValuesUseLibrary(int valuesAmount,
             CancellationToken cancellationToken)
         {
-            var exponential = new Exponential(_lambda);
+            var exponential = new Exponential((double)_lambda);
 
-            var values = new double[valuesAmount];
+            var values = new decimal[valuesAmount];
 
             for (var i = 0; i < valuesAmount; i++)
             {
                 if (cancellationToken.IsCancellationRequested) throw new OperationCanceledException();
 
-                values[i] = exponential.Sample();
+                values[i] = (decimal)exponential.Sample();
             }
 
             return values;
@@ -73,8 +70,8 @@ namespace ExperimentalDataProcessing.Math.Distribution
         protected override void CalculateTheoreticalCharacteristics()
         {
             var theoreticalMean = 1 / _lambda;
-            var theoreticalDispersion = 1 / System.Math.Pow(_lambda, 2);
-            var theoreticalStdDev = System.Math.Sqrt(theoreticalDispersion);
+            var theoreticalDispersion = 1 / MathHelper.Pow(_lambda, 2);
+            var theoreticalStdDev = MathHelper.Sqrt(theoreticalDispersion);
 
             TheoreticalCharacteristics = new DistributionStatisticalCharacteristics
             {
@@ -84,16 +81,16 @@ namespace ExperimentalDataProcessing.Math.Distribution
             };
         }
 
-        public override Func<double, double?> GetDensityFunction()
+        public override Func<double, decimal?> GetDensityFunction()
         {
-            var densityFunction = new Func<double, double?>(x => ExponentialDensity(x, _lambda));
+            var densityFunction = new Func<double, decimal?>(x => ExponentialDensity(x, _lambda));
             return densityFunction;
         }
 
-        protected override double CalculateIntervalHitProbability(double intervalStart, double intervalEnd)
+        protected override decimal CalculateIntervalHitProbability(decimal intervalStart, decimal intervalEnd)
         {
-            var hitProbability = System.Math.Exp(-1 * _lambda * intervalStart)
-                                 - System.Math.Exp(-1 * _lambda * intervalEnd);
+            var hitProbability = MathHelper.Exp(-1 * _lambda * intervalStart)
+                                 - MathHelper.Exp(-1 * _lambda * intervalEnd);
 
             return hitProbability;
         }
@@ -104,11 +101,11 @@ namespace ExperimentalDataProcessing.Math.Distribution
         /// <param name="x">X</param>
         /// <param name="lambda">Параметр интенсивности (лямбда)</param>
         /// <returns></returns>
-        private static double ExponentialDensity(double x, double lambda)
+        private static decimal ExponentialDensity(double x, decimal lambda)
         {
             if (x < 0) return 0;
 
-            return lambda * System.Math.Exp(-lambda * x);
+            return lambda * MathHelper.Exp(-lambda * (decimal)x);
         }
     }
 }

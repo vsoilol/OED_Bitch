@@ -15,7 +15,7 @@ namespace ExperimentalDataProcessing.CommonForms.DistributionUserControls
 
         public override BaseDistribution GetDistribution()
         {
-            var lambda = (double)lambdaInput.Value;
+            var lambda = lambdaInput.Value;
 
             return new ExponentialDistribution(lambda);
         }

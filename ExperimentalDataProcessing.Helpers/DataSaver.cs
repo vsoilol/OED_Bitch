@@ -6,7 +6,7 @@ namespace ExperimentalDataProcessing.Helpers
 {
     public class DataSaver
     {
-        public static void SaveDataToFile(IEnumerable<double> xs, string fileName, string fileExtension = ".txt",
+        public static void SaveDataToFile<T>(IEnumerable<T> xs, string fileName, string fileExtension = ".txt",
             bool hasDateTime = true, string folderPath = null)
         {
             if (folderPath is null)

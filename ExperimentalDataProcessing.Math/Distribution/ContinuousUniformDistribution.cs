@@ -9,10 +9,10 @@ namespace ExperimentalDataProcessing.Math.Distribution
 {
     public sealed class ContinuousUniformDistribution : BaseDistribution
     {
-        private readonly double _intervalEnd;
-        private readonly double _intervalStart;
+        private readonly decimal _intervalEnd;
+        private readonly decimal _intervalStart;
 
-        public ContinuousUniformDistribution(double intervalStart, double intervalEnd)
+        public ContinuousUniformDistribution(decimal intervalStart, decimal intervalEnd)
         {
             _intervalStart = intervalStart;
             _intervalEnd = intervalEnd;
@@ -20,7 +20,7 @@ namespace ExperimentalDataProcessing.Math.Distribution
             CalculateTheoreticalCharacteristics();
         }
 
-        public override void GeneratePseudorandomValues(int valuesAmount, double estimateAccuracy,
+        public override void GeneratePseudorandomValues(int valuesAmount, decimal estimateAccuracy,
             CancellationToken cancellationToken)
         {
             do
@@ -28,16 +28,15 @@ namespace ExperimentalDataProcessing.Math.Distribution
                 if (cancellationToken.IsCancellationRequested) throw new OperationCanceledException();
 
                 PseudorandomValues = GeneratePseudorandomValuesUseFormulas(valuesAmount, cancellationToken);
-                CalculateExperimentalCharacteristics();
             } while (!IsCheckPassed(estimateAccuracy));
 
             DataSaver.SaveDataToFile(PseudorandomValues, "Равномерное");
         }
 
-        private IEnumerable<double> GeneratePseudorandomValuesUseFormulas(int valuesAmount,
+        private IEnumerable<decimal> GeneratePseudorandomValuesUseFormulas(int valuesAmount,
             CancellationToken cancellationToken)
         {
-            var values = new double[valuesAmount];
+            var values = new decimal[valuesAmount];
 
             for (var i = 0; i < valuesAmount; i++)
             {
@@ -52,7 +51,7 @@ namespace ExperimentalDataProcessing.Math.Distribution
         private IEnumerable<double> GeneratePseudorandomValuesUseLibrary(int valuesAmount,
             CancellationToken cancellationToken)
         {
-            var continuousUniform = new ContinuousUniform(_intervalStart, _intervalEnd);
+            var continuousUniform = new ContinuousUniform((double)_intervalStart, (double)_intervalEnd);
 
             var values = new double[valuesAmount];
 
@@ -69,8 +68,8 @@ namespace ExperimentalDataProcessing.Math.Distribution
         protected override void CalculateTheoreticalCharacteristics()
         {
             var theoreticalMean = (_intervalStart + _intervalEnd) / 2;
-            var theoreticalDispersion = System.Math.Pow(_intervalEnd - _intervalStart, 2) / 12;
-            var theoreticalStdDev = System.Math.Sqrt(theoreticalDispersion);
+            var theoreticalDispersion = MathHelper.Pow(_intervalEnd - _intervalStart, 2) / 12;
+            var theoreticalStdDev = MathHelper.Sqrt(theoreticalDispersion);
 
             TheoreticalCharacteristics = new DistributionStatisticalCharacteristics
             {
@@ -80,14 +79,14 @@ namespace ExperimentalDataProcessing.Math.Distribution
             };
         }
 
-        public override Func<double, double?> GetDensityFunction()
+        public override Func<double, decimal?> GetDensityFunction()
         {
-            var densityFunction =
-                new Func<double, double?>(x => ContinuousUniformDensity(x, _intervalStart, _intervalEnd));
+            var densityFunction = new Func<double, decimal?>(x =>
+                ContinuousUniformDensity(x, _intervalStart, _intervalEnd));
             return densityFunction;
         }
 
-        protected override double CalculateIntervalHitProbability(double intervalStart, double intervalEnd)
+        protected override decimal CalculateIntervalHitProbability(decimal intervalStart, decimal intervalEnd)
         {
             throw new NotImplementedException();
         }
@@ -99,9 +98,9 @@ namespace ExperimentalDataProcessing.Math.Distribution
         /// <param name="intervalStart">Начало интервала</param>
         /// <param name="intervalEnd">Конец интервала</param>
         /// <returns></returns>
-        private static double ContinuousUniformDensity(double x, double intervalStart, double intervalEnd)
+        private static decimal ContinuousUniformDensity(double x, decimal intervalStart, decimal intervalEnd)
         {
-            if (x >= intervalStart && x <= intervalEnd) return 1 / (intervalEnd - intervalStart);
+            if ((decimal)x >= intervalStart && (decimal)x <= intervalEnd) return 1 / (intervalEnd - intervalStart);
 
             return 0;
         }

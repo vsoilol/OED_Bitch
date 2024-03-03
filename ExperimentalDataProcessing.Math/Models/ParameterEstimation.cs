@@ -4,11 +4,11 @@
     {
         public string Name { get; set; }
 
-        public double ExperimentalValue { get; set; }
+        public decimal ExperimentalValue { get; set; }
 
-        public double TheoreticalValue { get; set; }
+        public decimal TheoreticalValue { get; set; }
 
-        public double Deviation { get; set; }
+        public decimal Deviation { get; set; }
 
         /// <summary>
         ///     Пройдена ли проверка

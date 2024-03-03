@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using ExperimentalDataProcessing.CommonForms.DistributionUserControls;
@@ -63,7 +64,7 @@ namespace ExperimentalDataProcessing.Lab2.Winform
             formsPlot.Plot.Clear();
             AddAxisForPlot();
 
-            var estimateAccuracy = (double)estimateAccuracyInput.Value;
+            var estimateAccuracy = estimateAccuracyInput.Value;
             _distribution = _currentInputsPanel.GetDistribution();
 
             var valuesAmount = IsValuesFromFileCheckBox.Checked
@@ -98,7 +99,7 @@ namespace ExperimentalDataProcessing.Lab2.Winform
             calculateButton.Enabled = true;
         }
 
-        private bool TrySetPseudorandomValues(double estimateAccuracy, int? valuesAmount = null)
+        private bool TrySetPseudorandomValues(decimal estimateAccuracy, int? valuesAmount = null)
         {
             if (IsValuesFromFileCheckBox.Checked || !valuesAmount.HasValue)
             {
@@ -129,7 +130,7 @@ namespace ExperimentalDataProcessing.Lab2.Winform
 
         private void DisplayHypothesisDistributionIntervals()
         {
-            var significanceLevel = (double)significanceLevelInput.Value;
+            var significanceLevel = significanceLevelInput.Value;
             var intervalsAmount = intervalsAutomaticallyCheckBox.Checked
                 ? null
                 : (int?)System.Math.Ceiling(intervalsAmountInput.Value);
@@ -161,16 +162,16 @@ namespace ExperimentalDataProcessing.Lab2.Winform
                 verifyHypothesisDistributionResult.IsHypothesisRefuted ? "Да" : "Нет", "-", "-");
         }
 
-        private void DisplayParametersEstimation(double estimateAccuracy)
+        private void DisplayParametersEstimation(decimal estimateAccuracy)
         {
             var parametersEstimation = _distribution
                 .CalculateParametersEstimation(estimateAccuracy);
 
             foreach (var parameterEstimation in parametersEstimation)
             {
-                var parameterExperimentalValue = System.Math.Round(parameterEstimation.ExperimentalValue, 2);
-                var parameterTheoreticalValue = System.Math.Round(parameterEstimation.TheoreticalValue, 2);
-                var parameterDeviation = System.Math.Round(parameterEstimation.Deviation, 2);
+                var parameterExperimentalValue = System.Math.Round(parameterEstimation.ExperimentalValue, 3);
+                var parameterTheoreticalValue = System.Math.Round(parameterEstimation.TheoreticalValue, 3);
+                var parameterDeviation = System.Math.Round(parameterEstimation.Deviation, 3);
 
                 var passwdCheckText = parameterEstimation.HasPassedCheck ? "Да" : "Нет";
 
@@ -180,11 +181,11 @@ namespace ExperimentalDataProcessing.Lab2.Winform
             }
         }
 
-        private IEnumerable<double> GetValuesFromFile()
+        private IEnumerable<decimal> GetValuesFromFile()
         {
             var filePath = fileUploadPanel.FilePath;
 
-            var values = new List<double>();
+            var values = new List<decimal>();
 
             try
             {
@@ -206,7 +207,7 @@ namespace ExperimentalDataProcessing.Lab2.Winform
                         continue;
 
                     // Try to parse the line as a double
-                    if (double.TryParse(line, out var value))
+                    if (decimal.TryParse(line, out var value))
                     {
                         // Add the parsed value to the list
                         values.Add(value);
@@ -229,24 +230,26 @@ namespace ExperimentalDataProcessing.Lab2.Winform
             return values;
         }
 
-        private void DrawHistogram(IEnumerable<double> values, int min, int max)
+        private void DrawHistogram(IEnumerable<decimal> values, int min, int max)
         {
             var binCount = System.Math.Abs(max - min);
             var hist = new Histogram(min, max, binCount);
 
-            hist.AddRange(values);
+            hist.AddRange(values.Select(value => (double)value));
             var probabilities = hist.GetProbability();
 
             var bar = formsPlot.Plot.AddBar(probabilities, hist.Bins);
             bar.BarWidth = 1;
         }
 
-        private void DrawFunction(Func<double, double?> function)
+        private void DrawFunction(Func<double, decimal?> function)
         {
-            formsPlot.Plot.AddFunction(function, lineWidth: 4);
+            Func<double, double?> doubleFunction = x => (double?)function(x);
+
+            formsPlot.Plot.AddFunction(doubleFunction, lineWidth: 4);
         }
 
-        private void DrawFunctionByDots(Func<double, double?> function, int min, int max)
+        private void DrawFunctionByDots(Func<double, decimal?> function, int min, int max)
         {
             var xValues = new double[max - min + 1];
             var yValues = new double[max - min + 1];
@@ -254,7 +257,7 @@ namespace ExperimentalDataProcessing.Lab2.Winform
             for (var x = min; x <= max; x++)
             {
                 xValues[x - min] = x;
-                yValues[x - min] = function(x) ?? 0;
+                yValues[x - min] = (double?)function(x) ?? 0;
             }
 
             var plt = formsPlot.Plot;

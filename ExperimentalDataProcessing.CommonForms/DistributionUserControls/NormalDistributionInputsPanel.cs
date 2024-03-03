@@ -15,8 +15,8 @@ namespace ExperimentalDataProcessing.CommonForms.DistributionUserControls
 
         public override BaseDistribution GetDistribution()
         {
-            var stdDev = (double)stdDevInput.Value;
-            var mean = (double)meanInput.Value;
+            var stdDev = stdDevInput.Value;
+            var mean = meanInput.Value;
 
             return new NormalDistribution(mean, stdDev);
         }

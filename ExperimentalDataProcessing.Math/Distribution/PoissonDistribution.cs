@@ -9,9 +9,9 @@ namespace ExperimentalDataProcessing.Math.Distribution
 {
     public sealed class PoissonDistribution : BaseDistribution
     {
-        private readonly double _lambda;
+        private readonly decimal _lambda;
 
-        public PoissonDistribution(double lambda)
+        public PoissonDistribution(decimal lambda)
         {
             _lambda = lambda;
 
@@ -20,7 +20,7 @@ namespace ExperimentalDataProcessing.Math.Distribution
 
         public override bool IsDensityGraphingFromPoints { get; protected set; } = true;
 
-        public override void GeneratePseudorandomValues(int valuesAmount, double estimateAccuracy,
+        public override void GeneratePseudorandomValues(int valuesAmount, decimal estimateAccuracy,
             CancellationToken cancellationToken)
         {
             do
@@ -28,7 +28,6 @@ namespace ExperimentalDataProcessing.Math.Distribution
                 if (cancellationToken.IsCancellationRequested) throw new OperationCanceledException();
 
                 PseudorandomValues = GeneratePseudorandomValuesUseFormulas(valuesAmount, cancellationToken);
-                CalculateExperimentalCharacteristics();
             } while (!IsCheckPassed(estimateAccuracy));
 
             DataSaver.SaveDataToFile(PseudorandomValues, "Пуассона");
@@ -41,18 +40,18 @@ namespace ExperimentalDataProcessing.Math.Distribution
         ///     используется произведение равномерных случайных величин:
         /// </summary>
         /// <returns></returns>
-        private IEnumerable<double> GeneratePseudorandomValuesUseFormulas(int valuesAmount,
+        private IEnumerable<decimal> GeneratePseudorandomValuesUseFormulas(int valuesAmount,
             CancellationToken cancellationToken)
         {
-            var values = new double[valuesAmount];
+            var values = new decimal[valuesAmount];
 
-            var expRateInv = System.Math.Exp(-_lambda);
+            var expRateInv = MathHelper.Exp(-_lambda);
 
             for (var i = 0; i < valuesAmount; i++)
             {
                 if (cancellationToken.IsCancellationRequested) throw new OperationCanceledException();
 
-                double k = 0;
+                decimal k = 0;
                 var prod = GenerateUniform();
 
                 while (prod > expRateInv)
@@ -67,12 +66,12 @@ namespace ExperimentalDataProcessing.Math.Distribution
             return values;
         }
 
-        private IEnumerable<double> GeneratePseudorandomValuesUseLibrary(int valuesAmount,
+        private IEnumerable<decimal> GeneratePseudorandomValuesUseLibrary(int valuesAmount,
             CancellationToken cancellationToken)
         {
-            var exponential = new Poisson(_lambda);
+            var exponential = new Poisson((double)_lambda);
 
-            var values = new double[valuesAmount];
+            var values = new decimal[valuesAmount];
 
             for (var i = 0; i < valuesAmount; i++)
             {
@@ -88,7 +87,7 @@ namespace ExperimentalDataProcessing.Math.Distribution
         {
             var theoreticalMean = _lambda;
             var theoreticalDispersion = _lambda;
-            var theoreticalStdDev = System.Math.Sqrt(theoreticalDispersion);
+            var theoreticalStdDev = MathHelper.Sqrt(theoreticalDispersion);
 
             TheoreticalCharacteristics = new DistributionStatisticalCharacteristics
             {
@@ -98,18 +97,15 @@ namespace ExperimentalDataProcessing.Math.Distribution
             };
         }
 
-        public override Func<double, double?> GetDensityFunction()
+        public override Func<double, decimal?> GetDensityFunction()
         {
-            var densityFunction = new Func<double, double?>(x => PoissonDensity(x, _lambda));
+            var densityFunction = new Func<double, decimal?>(x => (decimal)PoissonDensity(x, (double)_lambda));
             return densityFunction;
         }
 
-        protected override double CalculateIntervalHitProbability(double intervalStart, double intervalEnd)
+        protected override decimal CalculateIntervalHitProbability(decimal intervalStart, decimal intervalEnd)
         {
-            var hitProbability = System.Math.Exp(-1 * _lambda * intervalStart)
-                                 - System.Math.Exp(-1 * _lambda * intervalEnd);
-
-            return hitProbability;
+            throw new NotImplementedException();
         }
 
         /// <summary>

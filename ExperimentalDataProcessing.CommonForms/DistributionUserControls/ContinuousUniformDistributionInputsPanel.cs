@@ -15,8 +15,8 @@ namespace ExperimentalDataProcessing.CommonForms.DistributionUserControls
 
         public override BaseDistribution GetDistribution()
         {
-            var intervalStart = (double)intervalStartInput.Value;
-            var intervalEnd = (double)intervalEndInput.Value;
+            var intervalStart = intervalStartInput.Value;
+            var intervalEnd = intervalEndInput.Value;
 
             return new ContinuousUniformDistribution(intervalStart, intervalEnd);
         }

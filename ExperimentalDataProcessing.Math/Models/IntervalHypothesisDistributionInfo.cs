@@ -10,12 +10,12 @@
         /// <summary>
         ///     Начало интервала
         /// </summary>
-        public double IntervalStart { get; set; }
+        public decimal IntervalStart { get; set; }
 
         /// <summary>
         ///     Конец интервала
         /// </summary>
-        public double IntervalEnd { get; set; }
+        public decimal IntervalEnd { get; set; }
 
         /// <summary>
         ///     Количество значений в интервале
@@ -25,11 +25,11 @@
         /// <summary>
         ///     Вероятность попадания в интервал
         /// </summary>
-        public double HitProbability { get; set; }
+        public decimal HitProbability { get; set; }
 
         /// <summary>
         ///     Теоретическая частота
         /// </summary>
-        public double TheoreticalFrequencies { get; set; }
+        public decimal TheoreticalFrequencies { get; set; }
     }
 }
