@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace ExperimentalDataProcessing.CommonForms.UserControls
+namespace ExperimentalDataProcessing.CommonForms.DistributionUserControls
 {
     public class AbstractControlDescriptionProvider<TAbstract, TBase> : TypeDescriptionProvider
     {

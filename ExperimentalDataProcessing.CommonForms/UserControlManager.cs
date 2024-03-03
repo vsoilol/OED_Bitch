@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using ExperimentalDataProcessing.CommonForms.UserControls;
+using ExperimentalDataProcessing.CommonForms.DistributionUserControls;
 
 namespace ExperimentalDataProcessing.CommonForms
 {

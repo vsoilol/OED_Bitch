@@ -12,7 +12,7 @@ namespace ExperimentalDataProcessing.Math.Distribution
 
         public virtual bool IsDensityGraphingFromPoints { get; protected set; } = false;
 
-        public IEnumerable<double> PseudorandomValues { get; protected set; }
+        public IEnumerable<double> PseudorandomValues { get; set; }
 
         public DistributionStatisticalCharacteristics TheoreticalCharacteristics { get; protected set; } =
             new DistributionStatisticalCharacteristics();

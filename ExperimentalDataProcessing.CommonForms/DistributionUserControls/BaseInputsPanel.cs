@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using ExperimentalDataProcessing.Math.Distribution;
 
-namespace ExperimentalDataProcessing.CommonForms.UserControls
+namespace ExperimentalDataProcessing.CommonForms.DistributionUserControls
 {
     [TypeDescriptionProvider(typeof(AbstractControlDescriptionProvider<BaseInputsPanel, UserControl>))]
     public abstract class BaseInputsPanel : UserControl

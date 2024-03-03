@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace ExperimentalDataProcessing.CommonForms.UserControls
+namespace ExperimentalDataProcessing.CommonForms.DistributionUserControls
 {
     partial class ExponentialDistributionInputsPanel
     {

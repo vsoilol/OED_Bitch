@@ -42,33 +42,39 @@
     <ItemGroup>
         <Compile Include="Properties\AssemblyInfo.cs"/>
         <Compile Include="UserControlManager.cs"/>
-        <Compile Include="UserControls\AbstractControlDescriptionProvider.cs"/>
-        <Compile Include="UserControls\BaseInputsPanel.cs">
+        <Compile Include="DistributionUserControls\AbstractControlDescriptionProvider.cs"/>
+        <Compile Include="DistributionUserControls\BaseInputsPanel.cs">
             <SubType>UserControl</SubType>
         </Compile>
-        <Compile Include="UserControls\ContinuousUniformDistributionInputsPanel.cs">
+        <Compile Include="DistributionUserControls\ContinuousUniformDistributionInputsPanel.cs">
             <SubType>UserControl</SubType>
         </Compile>
-        <Compile Include="UserControls\ContinuousUniformDistributionInputsPanel.Designer.cs">
+        <Compile Include="DistributionUserControls\ContinuousUniformDistributionInputsPanel.Designer.cs">
             <DependentUpon>ContinuousUniformDistributionInputsPanel.cs</DependentUpon>
         </Compile>
-        <Compile Include="UserControls\ExponentialDistributionInputsPanel.cs">
+        <Compile Include="DistributionUserControls\ExponentialDistributionInputsPanel.cs">
             <SubType>UserControl</SubType>
         </Compile>
-        <Compile Include="UserControls\ExponentialDistributionInputsPanel.Designer.cs">
+        <Compile Include="DistributionUserControls\ExponentialDistributionInputsPanel.Designer.cs">
             <DependentUpon>ExponentialDistributionInputsPanel.cs</DependentUpon>
         </Compile>
-        <Compile Include="UserControls\NormalDistributionInputsPanel.cs">
+        <Compile Include="DistributionUserControls\NormalDistributionInputsPanel.cs">
             <SubType>UserControl</SubType>
         </Compile>
-        <Compile Include="UserControls\NormalDistributionInputsPanel.Designer.cs">
+        <Compile Include="DistributionUserControls\NormalDistributionInputsPanel.Designer.cs">
             <DependentUpon>NormalDistributionInputsPanel.cs</DependentUpon>
         </Compile>
-        <Compile Include="UserControls\PoissonDistributionInputsPanel.cs">
+        <Compile Include="DistributionUserControls\PoissonDistributionInputsPanel.cs">
             <SubType>UserControl</SubType>
         </Compile>
-        <Compile Include="UserControls\PoissonDistributionInputsPanel.Designer.cs">
+        <Compile Include="DistributionUserControls\PoissonDistributionInputsPanel.Designer.cs">
             <DependentUpon>PoissonDistributionInputsPanel.cs</DependentUpon>
+        </Compile>
+        <Compile Include="UserControls\FileUpload.cs">
+            <SubType>UserControl</SubType>
+        </Compile>
+        <Compile Include="UserControls\FileUpload.Designer.cs">
+            <DependentUpon>FileUpload.cs</DependentUpon>
         </Compile>
         <Compile Include="WindowForms\WaitFormDialog.cs">
             <SubType>Form</SubType>
@@ -85,17 +91,20 @@
         </ProjectReference>
     </ItemGroup>
     <ItemGroup>
-        <EmbeddedResource Include="UserControls\ContinuousUniformDistributionInputsPanel.resx">
+        <EmbeddedResource Include="DistributionUserControls\ContinuousUniformDistributionInputsPanel.resx">
             <DependentUpon>ContinuousUniformDistributionInputsPanel.cs</DependentUpon>
         </EmbeddedResource>
-        <EmbeddedResource Include="UserControls\ExponentialDistributionInputsPanel.resx">
+        <EmbeddedResource Include="DistributionUserControls\ExponentialDistributionInputsPanel.resx">
             <DependentUpon>ExponentialDistributionInputsPanel.cs</DependentUpon>
         </EmbeddedResource>
-        <EmbeddedResource Include="UserControls\NormalDistributionInputsPanel.resx">
+        <EmbeddedResource Include="DistributionUserControls\NormalDistributionInputsPanel.resx">
             <DependentUpon>NormalDistributionInputsPanel.cs</DependentUpon>
         </EmbeddedResource>
-        <EmbeddedResource Include="UserControls\PoissonDistributionInputsPanel.resx">
+        <EmbeddedResource Include="DistributionUserControls\PoissonDistributionInputsPanel.resx">
             <DependentUpon>PoissonDistributionInputsPanel.cs</DependentUpon>
+        </EmbeddedResource>
+        <EmbeddedResource Include="UserControls\FileUpload.resx">
+            <DependentUpon>FileUpload.cs</DependentUpon>
         </EmbeddedResource>
         <EmbeddedResource Include="WindowForms\WaitFormDialog.resx">
             <DependentUpon>WaitFormDialog.cs</DependentUpon>

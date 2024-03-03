@@ -1,6 +1,6 @@
 ﻿using ExperimentalDataProcessing.Math.Distribution;
 
-namespace ExperimentalDataProcessing.CommonForms.UserControls
+namespace ExperimentalDataProcessing.CommonForms.DistributionUserControls
 {
     public partial class NormalDistributionInputsPanel : BaseInputsPanel
     {

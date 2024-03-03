@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Forms;
-using ExperimentalDataProcessing.CommonForms.UserControls;
+using ExperimentalDataProcessing.CommonForms.DistributionUserControls;
 using ExperimentalDataProcessing.CommonForms.WindowForms;
 using ExperimentalDataProcessing.CommonForms.Сonstants;
 using ExperimentalDataProcessing.Math.Distribution;

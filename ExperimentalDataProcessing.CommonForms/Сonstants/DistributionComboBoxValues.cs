@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using ExperimentalDataProcessing.CommonForms.UserControls;
+using ExperimentalDataProcessing.CommonForms.DistributionUserControls;
 
 namespace ExperimentalDataProcessing.CommonForms.Сonstants
 {
