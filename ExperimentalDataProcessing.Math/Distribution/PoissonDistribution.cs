@@ -9,9 +9,9 @@ namespace ExperimentalDataProcessing.Math.Distribution
 {
     public sealed class PoissonDistribution : BaseDistribution
     {
-        private readonly decimal _lambda;
+        private readonly double _lambda;
 
-        public PoissonDistribution(decimal lambda)
+        public PoissonDistribution(double lambda)
         {
             _lambda = lambda;
 
@@ -20,7 +20,7 @@ namespace ExperimentalDataProcessing.Math.Distribution
 
         public override bool IsDensityGraphingFromPoints { get; protected set; } = true;
 
-        public override void GeneratePseudorandomValues(int valuesAmount, decimal estimateAccuracy,
+        public override void GeneratePseudorandomValues(int valuesAmount, double estimateAccuracy,
             CancellationToken cancellationToken)
         {
             do
@@ -40,18 +40,18 @@ namespace ExperimentalDataProcessing.Math.Distribution
         ///     используется произведение равномерных случайных величин:
         /// </summary>
         /// <returns></returns>
-        private IEnumerable<decimal> GeneratePseudorandomValuesUseFormulas(int valuesAmount,
+        private IEnumerable<double> GeneratePseudorandomValuesUseFormulas(int valuesAmount,
             CancellationToken cancellationToken)
         {
-            var values = new decimal[valuesAmount];
+            var values = new double[valuesAmount];
 
-            var expRateInv = MathHelper.Exp(-_lambda);
+            var expRateInv = System.Math.Exp(-_lambda);
 
             for (var i = 0; i < valuesAmount; i++)
             {
                 if (cancellationToken.IsCancellationRequested) throw new OperationCanceledException();
 
-                decimal k = 0;
+                double k = 0;
                 var prod = GenerateUniform();
 
                 while (prod > expRateInv)
@@ -66,12 +66,12 @@ namespace ExperimentalDataProcessing.Math.Distribution
             return values;
         }
 
-        private IEnumerable<decimal> GeneratePseudorandomValuesUseLibrary(int valuesAmount,
+        private IEnumerable<double> GeneratePseudorandomValuesUseLibrary(int valuesAmount,
             CancellationToken cancellationToken)
         {
-            var exponential = new Poisson((double)_lambda);
+            var exponential = new Poisson(_lambda);
 
-            var values = new decimal[valuesAmount];
+            var values = new double[valuesAmount];
 
             for (var i = 0; i < valuesAmount; i++)
             {
@@ -87,23 +87,26 @@ namespace ExperimentalDataProcessing.Math.Distribution
         {
             var theoreticalMean = _lambda;
             var theoreticalDispersion = _lambda;
-            var theoreticalStdDev = MathHelper.Sqrt(theoreticalDispersion);
+            var theoreticalStdDev = System.Math.Sqrt(theoreticalDispersion);
+
+            var theoreticalKurtosis = 1 / _lambda;
 
             TheoreticalCharacteristics = new DistributionStatisticalCharacteristics
             {
                 Dispersion = theoreticalDispersion,
                 Mean = theoreticalMean,
-                StdDev = theoreticalStdDev
+                StdDev = theoreticalStdDev,
+                Kurtosis = theoreticalKurtosis
             };
         }
 
-        public override Func<double, decimal?> GetDensityFunction()
+        public override Func<double, double?> GetDensityFunction()
         {
-            var densityFunction = new Func<double, decimal?>(x => (decimal)PoissonDensity(x, (double)_lambda));
+            var densityFunction = new Func<double, double?>(x => PoissonDensity(x, _lambda));
             return densityFunction;
         }
 
-        protected override decimal CalculateIntervalHitProbability(decimal intervalStart, decimal intervalEnd)
+        protected override double CalculateIntervalHitProbability(double intervalStart, double intervalEnd)
         {
             throw new NotImplementedException();
         }
@@ -114,7 +117,7 @@ namespace ExperimentalDataProcessing.Math.Distribution
         /// <param name="x">X</param>
         /// <param name="lambda">Ламбда</param>
         /// <returns></returns>
-        private double PoissonDensity(double x, double lambda)
+        private static double PoissonDensity(double x, double lambda)
         {
             double factorial = 1;
             for (var i = 2; i <= x; i++) factorial *= i;

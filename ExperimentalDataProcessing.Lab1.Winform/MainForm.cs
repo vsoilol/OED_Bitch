@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
@@ -50,7 +51,7 @@ namespace ExperimentalDataProcessing.Lab1.Winform
             formsPlot.Plot.Clear();
             AddAxisForPlot();
 
-            var estimateAccuracy = estimateAccuracyInput.Value;
+            var estimateAccuracy = (double)estimateAccuracyInput.Value;
             _distribution = _currentInputsPanel.GetDistribution();
 
             var valuesAmount = (int)System.Math.Round(valuesAmountInput.Value);
@@ -69,11 +70,12 @@ namespace ExperimentalDataProcessing.Lab1.Winform
                 }
             }
 
-            DrawHistogram(_distribution.PseudorandomValues, _distribution.MinIntValue, _distribution.MaxIntValue);
+            DrawHistogram(_distribution.PseudorandomValues, _distribution.ValuesLeftBorderInt,
+                _distribution.ValuesRightBorderInt);
 
             if (_distribution.IsDensityGraphingFromPoints)
-                DrawFunctionByDots(_distribution.GetDensityFunction(), _distribution.MinIntValue,
-                    _distribution.MaxIntValue);
+                DrawFunctionByDots(_distribution.GetDensityFunction(), _distribution.ValuesLeftBorderInt,
+                    _distribution.ValuesRightBorderInt);
             else
                 DrawFunction(_distribution.GetDensityFunction());
 
@@ -84,7 +86,7 @@ namespace ExperimentalDataProcessing.Lab1.Winform
             calculateButton.Enabled = true;
         }
 
-        private void DisplayParametersEstimation(decimal estimateAccuracy)
+        private void DisplayParametersEstimation(double estimateAccuracy)
         {
             var parametersEstimation = _distribution
                 .CalculateParametersEstimation(estimateAccuracy);
@@ -92,10 +94,17 @@ namespace ExperimentalDataProcessing.Lab1.Winform
             foreach (var parameterEstimation in parametersEstimation)
             {
                 var parameterExperimentalValue = System.Math.Round(parameterEstimation.ExperimentalValue, 2);
-                var parameterTheoreticalValue = System.Math.Round(parameterEstimation.TheoreticalValue, 2);
-                var parameterDeviation = System.Math.Round(parameterEstimation.Deviation, 2);
+                var parameterTheoreticalValue = parameterEstimation.TheoreticalValue.HasValue
+                    ? System.Math.Round(parameterEstimation.TheoreticalValue.Value, 2)
+                        .ToString(CultureInfo.InvariantCulture)
+                    : "-";
+                var parameterDeviation = parameterEstimation.Deviation.HasValue
+                    ? System.Math.Round(parameterEstimation.Deviation.Value, 2).ToString(CultureInfo.InvariantCulture)
+                    : "-";
 
-                var passwdCheckText = parameterEstimation.HasPassedCheck ? "Да" : "Нет";
+                var passwdCheckText = parameterEstimation.HasPassedCheck.HasValue
+                    ? parameterEstimation.HasPassedCheck.Value ? "Да" : "Нет"
+                    : "-";
 
                 valuesResultTable.Rows.Add(parameterEstimation.Name, parameterTheoreticalValue,
                     parameterExperimentalValue, parameterDeviation,
@@ -103,26 +112,24 @@ namespace ExperimentalDataProcessing.Lab1.Winform
             }
         }
 
-        private void DrawHistogram(IEnumerable<decimal> values, int min, int max)
+        private void DrawHistogram(IEnumerable<double> values, int min, int max)
         {
             var binCount = System.Math.Abs(max - min);
             var hist = new Histogram(min, max, binCount);
 
-            hist.AddRange(values.Select(value => (double)value));
+            hist.AddRange(values);
             var probabilities = hist.GetProbability();
 
             var bar = formsPlot.Plot.AddBar(probabilities, hist.Bins);
             bar.BarWidth = 1;
         }
 
-        private void DrawFunction(Func<double, decimal?> function)
+        private void DrawFunction(Func<double, double?> function)
         {
-            Func<double, double?> doubleFunction = x => (double?)function(x);
-
-            formsPlot.Plot.AddFunction(doubleFunction, lineWidth: 4);
+            formsPlot.Plot.AddFunction(function, lineWidth: 4);
         }
 
-        private void DrawFunctionByDots(Func<double, decimal?> function, int min, int max)
+        private void DrawFunctionByDots(Func<double, double?> function, int min, int max)
         {
             var xValues = new double[max - min + 1];
             var yValues = new double[max - min + 1];
@@ -130,7 +137,7 @@ namespace ExperimentalDataProcessing.Lab1.Winform
             for (var x = min; x <= max; x++)
             {
                 xValues[x - min] = x;
-                yValues[x - min] = (double?)function(x) ?? 0;
+                yValues[x - min] = function(x) ?? 0;
             }
 
             var plt = formsPlot.Plot;

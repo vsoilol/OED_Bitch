@@ -4,15 +4,31 @@
     {
         public string Name { get; set; }
 
-        public decimal ExperimentalValue { get; set; }
+        public double ExperimentalValue { get; set; }
 
-        public decimal TheoreticalValue { get; set; }
+        public double? TheoreticalValue { get; set; }
 
-        public decimal Deviation { get; set; }
+        public double? Deviation { get; set; }
 
         /// <summary>
         ///     Пройдена ли проверка
         /// </summary>
-        public bool HasPassedCheck { get; set; }
+        public bool? HasPassedCheck { get; set; }
+
+        public ParameterEstimation(string name, double experimentalValue)
+        {
+            Name = name;
+            ExperimentalValue = experimentalValue;
+        }
+
+        public ParameterEstimation(string name, double experimentalValue, double theoreticalValue, double deviation,
+            bool hasPassedCheck)
+        {
+            Name = name;
+            ExperimentalValue = experimentalValue;
+            TheoreticalValue = theoreticalValue;
+            Deviation = deviation;
+            HasPassedCheck = hasPassedCheck;
+        }
     }
 }

@@ -5,16 +5,34 @@
         /// <summary>
         ///     Математическое ожидание
         /// </summary>
-        public decimal Mean { get; set; }
+        public double Mean { get; set; }
 
         /// <summary>
         ///     Среднеквадратическое отклонение
         /// </summary>
-        public decimal StdDev { get; set; }
+        public double StdDev { get; set; }
 
         /// <summary>
         ///     Дисперсия
         /// </summary>
-        public decimal Dispersion { get; set; }
+        public double Dispersion { get; set; }
+
+        /// <summary>
+        /// Коэффициент асимметрии
+        /// </summary>
+        public double Skewness { get; set; }
+        
+        /// <summary>
+        /// Коэффициент эксцесса
+        /// </summary>
+        public double Kurtosis { get; set; }
+        
+        public double FirstCorrectedCentralMoment { get; set; }
+        
+        public double SecondCorrectedCentralMoment { get; set; }
+        
+        public double ThirdCorrectedCentralMoment { get; set; }
+        
+        public double FourthCorrectedCentralMoment { get; set; }
     }
 }

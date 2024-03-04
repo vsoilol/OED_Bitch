@@ -65,9 +65,9 @@ namespace ExperimentalDataProcessing.Lab1.Winform
             this.valuesResultPanel.Controls.Add(this.valuesResultTable);
             this.valuesResultPanel.Controls.Add(this.label1);
             this.valuesResultPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.valuesResultPanel.Location = new System.Drawing.Point(0, 409);
+            this.valuesResultPanel.Location = new System.Drawing.Point(0, 326);
             this.valuesResultPanel.Name = "valuesResultPanel";
-            this.valuesResultPanel.Size = new System.Drawing.Size(869, 225);
+            this.valuesResultPanel.Size = new System.Drawing.Size(869, 308);
             this.valuesResultPanel.TabIndex = 1;
             // 
             // valuesResultTable
@@ -90,7 +90,12 @@ namespace ExperimentalDataProcessing.Lab1.Winform
             this.valuesResultTable.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.valuesResultTable.ColumnHeadersHeight = 40;
             this.valuesResultTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.valuesResultTable.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { this.name, this.theoreticalValue, this.experimental, this.deviation, this.isCheckPassed });
+            this.valuesResultTable.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.name,
+            this.theoreticalValue,
+            this.experimental,
+            this.deviation,
+            this.isCheckPassed});
             this.valuesResultTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.valuesResultTable.Location = new System.Drawing.Point(0, 29);
             this.valuesResultTable.Name = "valuesResultTable";
@@ -109,7 +114,7 @@ namespace ExperimentalDataProcessing.Lab1.Winform
             this.valuesResultTable.RowsDefaultCellStyle = dataGridViewCellStyle4;
             this.valuesResultTable.RowTemplate.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             this.valuesResultTable.RowTemplate.Height = 24;
-            this.valuesResultTable.Size = new System.Drawing.Size(869, 196);
+            this.valuesResultTable.Size = new System.Drawing.Size(869, 279);
             this.valuesResultTable.TabIndex = 1;
             // 
             // name
@@ -129,7 +134,7 @@ namespace ExperimentalDataProcessing.Lab1.Winform
             this.theoreticalValue.Name = "theoreticalValue";
             this.theoreticalValue.ReadOnly = true;
             this.theoreticalValue.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.theoreticalValue.Width = 116;
+            this.theoreticalValue.Width = 115;
             // 
             // experimental
             // 
@@ -149,7 +154,7 @@ namespace ExperimentalDataProcessing.Lab1.Winform
             this.deviation.Name = "deviation";
             this.deviation.ReadOnly = true;
             this.deviation.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.deviation.Width = 95;
+            this.deviation.Width = 93;
             // 
             // isCheckPassed
             // 
@@ -159,7 +164,7 @@ namespace ExperimentalDataProcessing.Lab1.Winform
             this.isCheckPassed.Name = "isCheckPassed";
             this.isCheckPassed.ReadOnly = true;
             this.isCheckPassed.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.isCheckPassed.Width = 166;
+            this.isCheckPassed.Width = 164;
             // 
             // label1
             // 
@@ -187,7 +192,7 @@ namespace ExperimentalDataProcessing.Lab1.Winform
             this.valuesPanel.Location = new System.Drawing.Point(0, 0);
             this.valuesPanel.Name = "valuesPanel";
             this.valuesPanel.Padding = new System.Windows.Forms.Padding(8);
-            this.valuesPanel.Size = new System.Drawing.Size(374, 409);
+            this.valuesPanel.Size = new System.Drawing.Size(374, 326);
             this.valuesPanel.TabIndex = 2;
             // 
             // calculateButton
@@ -233,12 +238,24 @@ namespace ExperimentalDataProcessing.Lab1.Winform
             // 
             this.valuesAmountInput.Dock = System.Windows.Forms.DockStyle.Top;
             this.valuesAmountInput.Location = new System.Drawing.Point(8, 75);
-            this.valuesAmountInput.Maximum = new decimal(new int[] { 10000000, 0, 0, 0 });
-            this.valuesAmountInput.Minimum = new decimal(new int[] { 10, 0, 0, 0 });
+            this.valuesAmountInput.Maximum = new decimal(new int[] {
+            10000000,
+            0,
+            0,
+            0});
+            this.valuesAmountInput.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.valuesAmountInput.Name = "valuesAmountInput";
             this.valuesAmountInput.Size = new System.Drawing.Size(358, 22);
             this.valuesAmountInput.TabIndex = 33;
-            this.valuesAmountInput.Value = new decimal(new int[] { 10, 0, 0, 0 });
+            this.valuesAmountInput.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             // 
             // label4
             // 
@@ -275,7 +292,7 @@ namespace ExperimentalDataProcessing.Lab1.Winform
             this.formsPlot.Location = new System.Drawing.Point(374, 0);
             this.formsPlot.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.formsPlot.Name = "formsPlot";
-            this.formsPlot.Size = new System.Drawing.Size(495, 409);
+            this.formsPlot.Size = new System.Drawing.Size(495, 326);
             this.formsPlot.TabIndex = 3;
             // 
             // MainForm
@@ -295,6 +312,7 @@ namespace ExperimentalDataProcessing.Lab1.Winform
             ((System.ComponentModel.ISupportInitialize)(this.estimateAccuracyInput)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.valuesAmountInput)).EndInit();
             this.ResumeLayout(false);
+
         }
 
         private System.Windows.Forms.Button calculateButton;
