@@ -67,11 +67,11 @@
             this.valuesAmountPanel = new System.Windows.Forms.Panel();
             this.valuesAmountInput = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
-            this.fileUploadPanel = new ExperimentalDataProcessing.CommonForms.UserControls.FileUpload();
             this.IsValuesFromFileCheckBox = new System.Windows.Forms.CheckBox();
             this.distributionComboBox = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.formsPlot = new ScottPlot.FormsPlot();
+            this.fileUploadPanel = new ExperimentalDataProcessing.CommonForms.UserControls.FileUpload();
             this.resultsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.valuesResultTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
@@ -88,9 +88,9 @@
             this.resultsPanel.Controls.Add(this.valuesResultTable);
             this.resultsPanel.Controls.Add(this.dataGridView);
             this.resultsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.resultsPanel.Location = new System.Drawing.Point(0, 493);
+            this.resultsPanel.Location = new System.Drawing.Point(0, 407);
             this.resultsPanel.Name = "resultsPanel";
-            this.resultsPanel.Size = new System.Drawing.Size(1402, 265);
+            this.resultsPanel.Size = new System.Drawing.Size(1402, 351);
             this.resultsPanel.TabIndex = 0;
             // 
             // valuesResultTable
@@ -114,7 +114,12 @@
             this.valuesResultTable.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.valuesResultTable.ColumnHeadersHeight = 50;
             this.valuesResultTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.valuesResultTable.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { this.name, this.theoreticalValue, this.experimental, this.deviation, this.isCheckPassed });
+            this.valuesResultTable.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.name,
+            this.theoreticalValue,
+            this.experimental,
+            this.deviation,
+            this.isCheckPassed});
             this.valuesResultTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.valuesResultTable.Location = new System.Drawing.Point(768, 0);
             this.valuesResultTable.Name = "valuesResultTable";
@@ -133,7 +138,7 @@
             this.valuesResultTable.RowsDefaultCellStyle = dataGridViewCellStyle4;
             this.valuesResultTable.RowTemplate.DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             this.valuesResultTable.RowTemplate.Height = 24;
-            this.valuesResultTable.Size = new System.Drawing.Size(634, 265);
+            this.valuesResultTable.Size = new System.Drawing.Size(634, 351);
             this.valuesResultTable.TabIndex = 5;
             // 
             // name
@@ -153,7 +158,7 @@
             this.theoreticalValue.Name = "theoreticalValue";
             this.theoreticalValue.ReadOnly = true;
             this.theoreticalValue.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.theoreticalValue.Width = 116;
+            this.theoreticalValue.Width = 115;
             // 
             // experimental
             // 
@@ -173,7 +178,7 @@
             this.deviation.Name = "deviation";
             this.deviation.ReadOnly = true;
             this.deviation.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.deviation.Width = 95;
+            this.deviation.Width = 93;
             // 
             // isCheckPassed
             // 
@@ -183,7 +188,7 @@
             this.isCheckPassed.Name = "isCheckPassed";
             this.isCheckPassed.ReadOnly = true;
             this.isCheckPassed.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.isCheckPassed.Width = 149;
+            this.isCheckPassed.Width = 148;
             // 
             // dataGridView
             // 
@@ -202,7 +207,13 @@
             dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dataGridView.ColumnHeadersHeight = 50;
-            this.dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { this.IntervalNumber, this.IntervalStart, this.IntervalEnd, this.Amount, this.Probability, this.TheoreticalFrequency });
+            this.dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.IntervalNumber,
+            this.IntervalStart,
+            this.IntervalEnd,
+            this.Amount,
+            this.Probability,
+            this.TheoreticalFrequency});
             this.dataGridView.Dock = System.Windows.Forms.DockStyle.Left;
             this.dataGridView.EnableHeadersVisualStyles = false;
             this.dataGridView.Location = new System.Drawing.Point(0, 0);
@@ -211,7 +222,7 @@
             this.dataGridView.RowHeadersWidth = 51;
             this.dataGridView.RowTemplate.Height = 24;
             this.dataGridView.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dataGridView.Size = new System.Drawing.Size(768, 265);
+            this.dataGridView.Size = new System.Drawing.Size(768, 351);
             this.dataGridView.TabIndex = 4;
             // 
             // IntervalNumber
@@ -223,7 +234,7 @@
             this.IntervalNumber.MinimumWidth = 6;
             this.IntervalNumber.Name = "IntervalNumber";
             this.IntervalNumber.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.IntervalNumber.Width = 118;
+            this.IntervalNumber.Width = 117;
             // 
             // IntervalStart
             // 
@@ -234,7 +245,7 @@
             this.IntervalStart.MinimumWidth = 6;
             this.IntervalStart.Name = "IntervalStart";
             this.IntervalStart.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.IntervalStart.Width = 124;
+            this.IntervalStart.Width = 123;
             // 
             // IntervalEnd
             // 
@@ -245,7 +256,7 @@
             this.IntervalEnd.MinimumWidth = 6;
             this.IntervalEnd.Name = "IntervalEnd";
             this.IntervalEnd.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.IntervalEnd.Width = 116;
+            this.IntervalEnd.Width = 114;
             // 
             // Amount
             // 
@@ -266,7 +277,7 @@
             this.Probability.MinimumWidth = 6;
             this.Probability.Name = "Probability";
             this.Probability.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Probability.Width = 158;
+            this.Probability.Width = 154;
             // 
             // TheoreticalFrequency
             // 
@@ -277,7 +288,7 @@
             this.TheoreticalFrequency.MinimumWidth = 6;
             this.TheoreticalFrequency.Name = "TheoreticalFrequency";
             this.TheoreticalFrequency.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.TheoreticalFrequency.Width = 156;
+            this.TheoreticalFrequency.Width = 153;
             // 
             // mainInputsContainerPanel
             // 
@@ -299,13 +310,13 @@
             this.mainInputsContainerPanel.Location = new System.Drawing.Point(0, 0);
             this.mainInputsContainerPanel.Name = "mainInputsContainerPanel";
             this.mainInputsContainerPanel.Padding = new System.Windows.Forms.Padding(5);
-            this.mainInputsContainerPanel.Size = new System.Drawing.Size(385, 493);
+            this.mainInputsContainerPanel.Size = new System.Drawing.Size(385, 407);
             this.mainInputsContainerPanel.TabIndex = 1;
             // 
             // calculateButton
             // 
             this.calculateButton.Dock = System.Windows.Forms.DockStyle.Top;
-            this.calculateButton.Location = new System.Drawing.Point(5, 388);
+            this.calculateButton.Location = new System.Drawing.Point(5, 343);
             this.calculateButton.Name = "calculateButton";
             this.calculateButton.Size = new System.Drawing.Size(375, 41);
             this.calculateButton.TabIndex = 91;
@@ -317,10 +328,10 @@
             // 
             this.intervalsAutomaticallyCheckBox.AutoSize = true;
             this.intervalsAutomaticallyCheckBox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.intervalsAutomaticallyCheckBox.Location = new System.Drawing.Point(5, 367);
+            this.intervalsAutomaticallyCheckBox.Location = new System.Drawing.Point(5, 323);
             this.intervalsAutomaticallyCheckBox.Margin = new System.Windows.Forms.Padding(0);
             this.intervalsAutomaticallyCheckBox.Name = "intervalsAutomaticallyCheckBox";
-            this.intervalsAutomaticallyCheckBox.Size = new System.Drawing.Size(375, 21);
+            this.intervalsAutomaticallyCheckBox.Size = new System.Drawing.Size(375, 20);
             this.intervalsAutomaticallyCheckBox.TabIndex = 90;
             this.intervalsAutomaticallyCheckBox.Text = "Расчитать интервал автоматически";
             this.intervalsAutomaticallyCheckBox.UseVisualStyleBackColor = true;
@@ -330,17 +341,25 @@
             // 
             this.intervalsAmountInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.intervalsAmountInput.Dock = System.Windows.Forms.DockStyle.Top;
-            this.intervalsAmountInput.Location = new System.Drawing.Point(5, 345);
-            this.intervalsAmountInput.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            this.intervalsAmountInput.Location = new System.Drawing.Point(5, 301);
+            this.intervalsAmountInput.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.intervalsAmountInput.Name = "intervalsAmountInput";
             this.intervalsAmountInput.Size = new System.Drawing.Size(375, 22);
             this.intervalsAmountInput.TabIndex = 89;
-            this.intervalsAmountInput.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            this.intervalsAmountInput.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // label4
             // 
             this.label4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label4.Location = new System.Drawing.Point(5, 325);
+            this.label4.Location = new System.Drawing.Point(5, 281);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(375, 20);
             this.label4.TabIndex = 88;
@@ -351,9 +370,17 @@
             this.significanceLevelInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.significanceLevelInput.DecimalPlaces = 3;
             this.significanceLevelInput.Dock = System.Windows.Forms.DockStyle.Top;
-            this.significanceLevelInput.Increment = new decimal(new int[] { 1, 0, 0, 196608 });
-            this.significanceLevelInput.Location = new System.Drawing.Point(5, 303);
-            this.significanceLevelInput.Maximum = new decimal(new int[] { 1, 0, 0, 0 });
+            this.significanceLevelInput.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            196608});
+            this.significanceLevelInput.Location = new System.Drawing.Point(5, 259);
+            this.significanceLevelInput.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.significanceLevelInput.Name = "significanceLevelInput";
             this.significanceLevelInput.Size = new System.Drawing.Size(375, 22);
             this.significanceLevelInput.TabIndex = 87;
@@ -361,7 +388,7 @@
             // label1
             // 
             this.label1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label1.Location = new System.Drawing.Point(5, 283);
+            this.label1.Location = new System.Drawing.Point(5, 239);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(375, 20);
             this.label1.TabIndex = 86;
@@ -371,9 +398,9 @@
             // 
             this.inputsContainerPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.inputsContainerPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.inputsContainerPanel.Location = new System.Drawing.Point(5, 210);
+            this.inputsContainerPanel.Location = new System.Drawing.Point(5, 209);
             this.inputsContainerPanel.Name = "inputsContainerPanel";
-            this.inputsContainerPanel.Size = new System.Drawing.Size(375, 73);
+            this.inputsContainerPanel.Size = new System.Drawing.Size(375, 30);
             this.inputsContainerPanel.TabIndex = 85;
             // 
             // estimateAccuracyInput
@@ -381,7 +408,7 @@
             this.estimateAccuracyInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.estimateAccuracyInput.DecimalPlaces = 3;
             this.estimateAccuracyInput.Dock = System.Windows.Forms.DockStyle.Top;
-            this.estimateAccuracyInput.Location = new System.Drawing.Point(5, 188);
+            this.estimateAccuracyInput.Location = new System.Drawing.Point(5, 187);
             this.estimateAccuracyInput.Name = "estimateAccuracyInput";
             this.estimateAccuracyInput.Size = new System.Drawing.Size(375, 22);
             this.estimateAccuracyInput.TabIndex = 84;
@@ -389,7 +416,7 @@
             // label3
             // 
             this.label3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label3.Location = new System.Drawing.Point(5, 168);
+            this.label3.Location = new System.Drawing.Point(5, 167);
             this.label3.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(375, 20);
@@ -402,7 +429,7 @@
             this.valuesAmountPanel.Controls.Add(this.valuesAmountInput);
             this.valuesAmountPanel.Controls.Add(this.label6);
             this.valuesAmountPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.valuesAmountPanel.Location = new System.Drawing.Point(5, 126);
+            this.valuesAmountPanel.Location = new System.Drawing.Point(5, 125);
             this.valuesAmountPanel.Name = "valuesAmountPanel";
             this.valuesAmountPanel.Size = new System.Drawing.Size(375, 42);
             this.valuesAmountPanel.TabIndex = 82;
@@ -411,12 +438,24 @@
             // 
             this.valuesAmountInput.Dock = System.Windows.Forms.DockStyle.Top;
             this.valuesAmountInput.Location = new System.Drawing.Point(0, 20);
-            this.valuesAmountInput.Maximum = new decimal(new int[] { 10000000, 0, 0, 0 });
-            this.valuesAmountInput.Minimum = new decimal(new int[] { 10, 0, 0, 0 });
+            this.valuesAmountInput.Maximum = new decimal(new int[] {
+            10000000,
+            0,
+            0,
+            0});
+            this.valuesAmountInput.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.valuesAmountInput.Name = "valuesAmountInput";
             this.valuesAmountInput.Size = new System.Drawing.Size(375, 22);
             this.valuesAmountInput.TabIndex = 62;
-            this.valuesAmountInput.Value = new decimal(new int[] { 10, 0, 0, 0 });
+            this.valuesAmountInput.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             // 
             // label6
             // 
@@ -427,16 +466,6 @@
             this.label6.TabIndex = 61;
             this.label6.Text = "Количество точек";
             // 
-            // fileUploadPanel
-            // 
-            this.fileUploadPanel.AutoSize = true;
-            this.fileUploadPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.fileUploadPanel.Location = new System.Drawing.Point(5, 73);
-            this.fileUploadPanel.Name = "fileUploadPanel";
-            this.fileUploadPanel.Size = new System.Drawing.Size(375, 53);
-            this.fileUploadPanel.TabIndex = 81;
-            this.fileUploadPanel.Visible = false;
-            // 
             // IsValuesFromFileCheckBox
             // 
             this.IsValuesFromFileCheckBox.AutoSize = true;
@@ -444,7 +473,7 @@
             this.IsValuesFromFileCheckBox.Location = new System.Drawing.Point(5, 52);
             this.IsValuesFromFileCheckBox.Margin = new System.Windows.Forms.Padding(0);
             this.IsValuesFromFileCheckBox.Name = "IsValuesFromFileCheckBox";
-            this.IsValuesFromFileCheckBox.Size = new System.Drawing.Size(375, 21);
+            this.IsValuesFromFileCheckBox.Size = new System.Drawing.Size(375, 20);
             this.IsValuesFromFileCheckBox.TabIndex = 59;
             this.IsValuesFromFileCheckBox.Text = "Получить данные с файла";
             this.IsValuesFromFileCheckBox.UseVisualStyleBackColor = true;
@@ -476,8 +505,18 @@
             this.formsPlot.Location = new System.Drawing.Point(385, 0);
             this.formsPlot.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.formsPlot.Name = "formsPlot";
-            this.formsPlot.Size = new System.Drawing.Size(1017, 493);
+            this.formsPlot.Size = new System.Drawing.Size(1017, 407);
             this.formsPlot.TabIndex = 2;
+            // 
+            // fileUploadPanel
+            // 
+            this.fileUploadPanel.AutoSize = true;
+            this.fileUploadPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.fileUploadPanel.Location = new System.Drawing.Point(5, 72);
+            this.fileUploadPanel.Name = "fileUploadPanel";
+            this.fileUploadPanel.Size = new System.Drawing.Size(375, 53);
+            this.fileUploadPanel.TabIndex = 81;
+            this.fileUploadPanel.Visible = false;
             // 
             // MainForm
             // 
@@ -502,6 +541,7 @@
             this.valuesAmountPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.valuesAmountInput)).EndInit();
             this.ResumeLayout(false);
+
         }
 
         private ExperimentalDataProcessing.CommonForms.UserControls.FileUpload fileUploadPanel;

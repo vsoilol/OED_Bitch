@@ -77,7 +77,7 @@ namespace ExperimentalDataProcessing.Math.Distribution
         private IEnumerable<decimal> GeneratePseudorandomValuesUseLibrary(int valuesAmount,
             CancellationToken cancellationToken)
         {
-            var normal = new Normal((double)_mean, (double)_stdDev);
+            var normal = new Normal(_mean, _stdDev);
 
             var values = new decimal[valuesAmount];
 

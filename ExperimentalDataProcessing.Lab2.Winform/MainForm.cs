@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using ExperimentalDataProcessing.CommonForms.DistributionUserControls;
@@ -171,13 +170,13 @@ namespace ExperimentalDataProcessing.Lab2.Winform
 
             foreach (var parameterEstimation in parametersEstimation)
             {
-                var parameterExperimentalValue = System.Math.Round(parameterEstimation.ExperimentalValue, 2);
+                var parameterExperimentalValue = System.Math.Round(parameterEstimation.ExperimentalValue, 3);
                 var parameterTheoreticalValue = parameterEstimation.TheoreticalValue.HasValue
-                    ? System.Math.Round(parameterEstimation.TheoreticalValue.Value, 2)
+                    ? System.Math.Round(parameterEstimation.TheoreticalValue.Value, 3)
                         .ToString(CultureInfo.InvariantCulture)
                     : "-";
                 var parameterDeviation = parameterEstimation.Deviation.HasValue
-                    ? System.Math.Round(parameterEstimation.Deviation.Value, 2).ToString(CultureInfo.InvariantCulture)
+                    ? System.Math.Round(parameterEstimation.Deviation.Value, 3).ToString(CultureInfo.InvariantCulture)
                     : "-";
 
                 var passwdCheckText = parameterEstimation.HasPassedCheck.HasValue

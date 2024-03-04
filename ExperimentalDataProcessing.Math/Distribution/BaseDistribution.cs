@@ -62,11 +62,11 @@ namespace ExperimentalDataProcessing.Math.Distribution
                 (valuesCount - 1);
             var experimentalStdDev = System.Math.Sqrt(experimentalDispersion);
 
-            var secondCentralMoment = CalculateCentralMoment(PseudorandomValues, (double)experimentalMean, 2);
-            var thirdCentralMoment = CalculateCentralMoment(PseudorandomValues, (double)experimentalMean, 3);
-            var fourthCentralMoment = CalculateCentralMoment(PseudorandomValues, (double)experimentalMean, 4);
+            var secondCentralMoment = CalculateCentralMoment(PseudorandomValues, experimentalMean, 2);
+            var thirdCentralMoment = CalculateCentralMoment(PseudorandomValues, experimentalMean, 3);
+            var fourthCentralMoment = CalculateCentralMoment(PseudorandomValues, experimentalMean, 4);
 
-            var thirdCorrectedCentralMoment = (thirdCentralMoment * System.Math.Pow(valuesCount, 2)) /
+            var thirdCorrectedCentralMoment = thirdCentralMoment * System.Math.Pow(valuesCount, 2) /
                                               ((valuesCount - 1) * (valuesCount - 2));
 
             var low = (valuesCount - 1d) * (valuesCount - 2d) * (valuesCount - 3d);
@@ -75,8 +75,8 @@ namespace ExperimentalDataProcessing.Math.Distribution
                 (valuesCount * fourthCentralMoment * (System.Math.Pow(valuesCount, 2) - 2 * valuesCount + 3) -
                  3 * valuesCount * System.Math.Pow(secondCentralMoment, 2) * (2 * valuesCount - 3)) / low;
 
-            var skewness = thirdCorrectedCentralMoment / System.Math.Pow((double)experimentalStdDev, 3);
-            var kurtosis = (fourthCorrectedCentralMoment / System.Math.Pow((double)experimentalStdDev, 4)) - 3;
+            var skewness = thirdCorrectedCentralMoment / System.Math.Pow(experimentalStdDev, 3);
+            var kurtosis = fourthCorrectedCentralMoment / System.Math.Pow(experimentalStdDev, 4) - 3;
 
             ExperimentalCharacteristics = new DistributionStatisticalCharacteristics
             {
@@ -121,13 +121,13 @@ namespace ExperimentalDataProcessing.Math.Distribution
 
             var firstCorrectedCentralMoment = new ParameterEstimation("Исправленный центральный момент 1-го порядка",
                 ExperimentalCharacteristics.FirstCorrectedCentralMoment);
-            
+
             var secondCorrectedCentralMoment = new ParameterEstimation("Исправленный центральный момент 2-го порядка",
                 ExperimentalCharacteristics.SecondCorrectedCentralMoment);
-            
+
             var thirdCorrectedCentralMoment = new ParameterEstimation("Исправленный центральный момент 3-го порядка",
                 ExperimentalCharacteristics.ThirdCorrectedCentralMoment);
-            
+
             var fourthCorrectedCentralMoment = new ParameterEstimation("Исправленный центральный момент 4-го порядка",
                 ExperimentalCharacteristics.FourthCorrectedCentralMoment);
 
@@ -235,7 +235,7 @@ namespace ExperimentalDataProcessing.Math.Distribution
         protected abstract double CalculateIntervalHitProbability(double intervalStart, double intervalEnd);
 
         /// <summary>
-        /// Эмпирическим (выборочным) центральным моментом k-го порядка
+        ///     Эмпирическим (выборочным) центральным моментом k-го порядка
         /// </summary>
         /// <param name="values">Значения</param>
         /// <param name="mean">Мат ожидание</param>

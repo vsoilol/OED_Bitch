@@ -18,21 +18,21 @@
         public double Dispersion { get; set; }
 
         /// <summary>
-        /// Коэффициент асимметрии
+        ///     Коэффициент асимметрии
         /// </summary>
         public double Skewness { get; set; }
-        
+
         /// <summary>
-        /// Коэффициент эксцесса
+        ///     Коэффициент эксцесса
         /// </summary>
         public double Kurtosis { get; set; }
-        
+
         public double FirstCorrectedCentralMoment { get; set; }
-        
+
         public double SecondCorrectedCentralMoment { get; set; }
-        
+
         public double ThirdCorrectedCentralMoment { get; set; }
-        
+
         public double FourthCorrectedCentralMoment { get; set; }
     }
 }
